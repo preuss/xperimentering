@@ -1,0 +1,70 @@
+Miljøvariabler:
+	DEFAULT_JVM_OPTIONS="-Dfile.encoding=UTF-8"
+	
+
+Defines Java encoding:
+	This defines what encoding java is using:
+		-Dfile.encoding=UTF-8
+	This defines property to specify the code page to use for output from the java or javaw command. 
+		-Dconsole.encoding=Cp1252
+		
+		-Dconsole.encoding=UTF-8
+	
+	This is a very used codepage:
+		UTF-8
+		CP1252
+		ISO-8859-1
+	
+Command Line Prompt DOS:
+	Unicode:
+		chcp 65001
+	
+	Windows Default:
+		chcp cp1252
+	
+	To make default change RegEx:
+		[HKEY_LOCAL_MACHINE\Software\Microsoft\Command Processor\Autorun]
+			chcp 65001
+	
+	This is the fallback
+		[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\CodePage]
+			oemcp 65001
+		
+		The default is 
+			oemcp 850
+
+
+For Gradle:
+===============
+Don't know if this changes anything inside gradle.properties:
+---------------------------------------------------------------
+xorg.gradle.jvmargs=-Dconsole.encoding=UTF-8 -Dfile.encoding=UTF-8
+
+
+Remember gradle.properties
+----------------------------
+	systemProp.file.encoding=UTF-8
+
+
+Inside build.gradle before repositories
+-----------------------------------------
+/**
+ * 1st approach: Setting encoding during compilation in Java and Test classes
+ */
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+javadoc.options.encoding = 'UTF-8'
+
+/**
+ * 2nd approach: Setting encoding during compilation in Java and Test classes
+ *
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+}
+tasks.withType(Test) {
+	systemProperty "file.encoding", "UTF-8"
+}
+tasks.withType(Javadoc) {
+	options.encoding = 'UTF-8'
+}
+ */

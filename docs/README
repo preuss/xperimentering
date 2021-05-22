@@ -1,0 +1,51 @@
+
+   Base64Code - Base64 Encoder/Decoder Java Library
+
+
+** INTRODUCTION:
+
+   This Java (tm) library implements Base64 encoding and decoding. It was
+   written because I couldn't find anything like it in the JDK except for an
+   internal class in com.sun.*, and using classes from this package is
+   totally unsupported by Sun.
+
+** DIFFERENCES:
+
+   Whats differs this library from most others are:
+   
+     1. It supports encoding and decoding of input streams in chunk mode.
+     2. The size of the internal allocated input buffer can be restricted.
+     
+   When encoding or decoding an string or byte array only the result buffer
+   gets allocated, the source is used as input buffer.
+   
+** SPECIFICATION:
+
+   This implementation is based on http://en.wikipedia.org/wiki/Base64 and 
+   RFC 2045 (section 6.8). However, support for the line break mode in 76 
+   character blocks mentioned in the RFC are not supported, mostly because 
+   I don't have any use of it.
+   
+   The library has been verified to produce the same result as other commonly 
+   used implementations, among them:
+   
+     *) The base64_encode() and base64_decode() functions in PHP.
+     *) The base64 command from GNU coreutils.
+
+** LICENSE:
+
+   The Base64Code Java Library is licensed under GPL with the classpath 
+   exception. This means that you are free to use this library even in 
+   commercial applications (closed source), see the files COPYING and
+   COPYING.CLASSPATH for details.
+   
+   The license gives you permission to (freely) link to and use this library
+   in unmodified form. If you use (copy) source code from this library to
+   your application, then the you have to release your work as open source 
+   as well.
+      
+** COPYRIGHT:
+
+   This library is Copyright (C) 2009 by Anders Lövgren.
+   
+// Anders Lövgren, 2009-05-27
