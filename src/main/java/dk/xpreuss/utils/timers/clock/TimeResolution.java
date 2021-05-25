@@ -1,7 +1,5 @@
 package dk.xpreuss.utils.timers.clock;
 
-import java.util.concurrent.TimeUnit;
-
 public enum TimeResolution {
 	WEEKS(TimeResolution.WEEK_SCALE),
 	DAYS(TimeResolution.DAY_SCALE),
@@ -12,19 +10,28 @@ public enum TimeResolution {
 	MICROSECONDS(TimeResolution.MICROSECOND_SCALE),
 	NANOSECONDS(TimeResolution.NANO_SCALE);
 
+	// Other scales as constants
+	static final int DAYS_PER_WEEK = 7;
+	static final int HOURS_PER_DAY = 24;
+	static final int MINUTES_PER_HOUR = 60;
+	static final int SECONDS_PER_MINUTE = 60;
+	static final int MILLISECONDS_PER_SECOND = 1_000;
+	static final int MICROSECONDS_PER_MILLISECOND = 1_000;
+	static final int NANOSECONDS_PER_MICROSECOND = 1_000;
+
 	// Scales as constants
-	private static final long NANO_SCALE = 1L;
-	private static final long MICROSECOND_SCALE = 1000L * NANO_SCALE;
-	private static final long MILLISECOND_SCALE = 1000L * MICROSECOND_SCALE;
-	private static final long SECOND_SCALE = 1000L * MILLISECOND_SCALE;
-	private static final long MINUTE_SCALE = 60L * SECOND_SCALE;
-	private static final long HOUR_SCALE = 60L * MINUTE_SCALE;
-	private static final long DAY_SCALE = 24L * HOUR_SCALE;
-	private static final long WEEK_SCALE = 7L * DAY_SCALE;
+	static final long NANO_SCALE = 1L;
+	static final long MICROSECOND_SCALE = NANOSECONDS_PER_MICROSECOND * NANO_SCALE;
+	static final long MILLISECOND_SCALE = MICROSECONDS_PER_MILLISECOND * MICROSECOND_SCALE;
+	static final long SECOND_SCALE = MILLISECONDS_PER_SECOND * MILLISECOND_SCALE;
+	static final long MINUTE_SCALE = SECONDS_PER_MINUTE * SECOND_SCALE;
+	static final long HOUR_SCALE = MINUTES_PER_HOUR * MINUTE_SCALE;
+	static final long DAY_SCALE = HOURS_PER_DAY * HOUR_SCALE;
+	static final long WEEK_SCALE = DAYS_PER_WEEK * DAY_SCALE;
 
 	private final long scale;
 
-	TimeResolution(long scale) {
+	private TimeResolution(long scale) {
 		this.scale = scale;
 	}
 
@@ -36,8 +43,7 @@ public enum TimeResolution {
 	 * @param targetResolution the target
 	 * @return the duration to target resolution
 	 */
-	private static long generalTimeConversion(long sourceDuration, TimeResolution sourceResolution,
-	                                          TimeResolution targetResolution) {
+	private static long generalTimeConversion(long sourceDuration, TimeResolution sourceResolution, TimeResolution targetResolution) {
 		if (targetResolution == sourceResolution) {
 			return sourceDuration;
 		}
@@ -49,6 +55,15 @@ public enum TimeResolution {
 			long scaleDiff = Math.floorDiv(sourceResolution.scale, targetResolution.scale);
 			return Math.multiplyExact(sourceDuration, scaleDiff);
 		}
+	}
+
+	/**
+	 * This defines the nano seconds included in this time resolution.
+	 *
+	 * @return the scale in amount of nanos for this time resolution
+	 */
+	public long getScale() {
+		return scale;
 	}
 
 	/**
