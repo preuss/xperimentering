@@ -64,9 +64,9 @@ public class SystemClock implements IClock {
 		System.out.println(System.nanoTime());
 
 
-		System.out.println("TimeSpan.Zero => " + TimeSpan.Zero);
+		System.out.println("TimeSpan.Zero => " + TimeSpan.ZERO);
 		System.out.println("TimeSpan.44 => " + TimeSpan.Builder().minutes(59).build());
-		System.out.println("xx TimeSpan.Zero => " + TimeSpan.Zero.toStringFull());
+		System.out.println("xx TimeSpan.Zero => " + TimeSpan.ZERO.toStringFull());
 		System.out.println("xxTimeSpan.44 => " + TimeSpan.Builder().days(77).milliseconds(123).microseconds(0).nanoseconds(678).build().toStringFull());
 
 		TimeSpan a = TimeSpan.Builder().minutes(-5).build();

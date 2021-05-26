@@ -8,7 +8,7 @@ public enum TimeResolution {
 	SECONDS(TimeResolution.SECOND_SCALE),
 	MILLISECONDS(TimeResolution.MILLISECOND_SCALE),
 	MICROSECONDS(TimeResolution.MICROSECOND_SCALE),
-	NANOSECONDS(TimeResolution.NANO_SCALE);
+	NANOSECONDS(TimeResolution.NANOSECOND_SCALE);
 
 	// Other scales as constants
 	static final int DAYS_PER_WEEK = 7;
@@ -19,9 +19,9 @@ public enum TimeResolution {
 	static final int MICROSECONDS_PER_MILLISECOND = 1_000;
 	static final int NANOSECONDS_PER_MICROSECOND = 1_000;
 
-	// Scales as constants
-	static final long NANO_SCALE = 1L;
-	static final long MICROSECOND_SCALE = NANOSECONDS_PER_MICROSECOND * NANO_SCALE;
+	// Scales as constants, ticked a a nanosecond number.
+	static final long NANOSECOND_SCALE = 1L;
+	static final long MICROSECOND_SCALE = NANOSECONDS_PER_MICROSECOND * NANOSECOND_SCALE;
 	static final long MILLISECOND_SCALE = MICROSECONDS_PER_MILLISECOND * MICROSECOND_SCALE;
 	static final long SECOND_SCALE = MILLISECONDS_PER_SECOND * MILLISECOND_SCALE;
 	static final long MINUTE_SCALE = SECONDS_PER_MINUTE * SECOND_SCALE;
@@ -31,7 +31,7 @@ public enum TimeResolution {
 
 	private final long scale;
 
-	private TimeResolution(long scale) {
+	TimeResolution(long scale) {
 		this.scale = scale;
 	}
 

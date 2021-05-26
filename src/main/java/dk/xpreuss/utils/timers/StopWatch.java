@@ -106,7 +106,7 @@ public class StopWatch implements IStopWatch {
 		//isRunning = false;
 		//isPaused = false;
 		startTick = getTicks(); // Don't care the start, this is not set yet.
-		elapsedNano = TimeSpan.Zero;
+		elapsedNano = TimeSpan.ZERO;
 		laps = new LinkedList<>();
 	}
 
@@ -119,7 +119,7 @@ public class StopWatch implements IStopWatch {
 		//isRunning = true;
 		//isPaused = false;
 		startTick = getTicks(); // This is important, because we start again.
-		elapsedNano = TimeSpan.Zero;
+		elapsedNano = TimeSpan.ZERO;
 		laps = new LinkedList<>();
 	}
 
@@ -182,8 +182,8 @@ public class StopWatch implements IStopWatch {
 	 * @return the elapsedTime or the reset to zero if elapsedTime was negative
 	 */
 	private TimeSpan resetIfNegative(TimeSpan elapsedTime) {
-		if (this.elapsedNano.compareTo(TimeSpan.Zero) < 0) {
-			return TimeSpan.Zero;
+		if (this.elapsedNano.compareTo(TimeSpan.ZERO) < 0) {
+			return TimeSpan.ZERO;
 		}
 		return elapsedTime;
 	}

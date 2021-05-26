@@ -4,37 +4,39 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 public class TimeSpan implements Comparable<TimeSpan> {
-	public static final TimeSpan Zero = new TimeSpan(0);
-	private static final int HoursPerDay = 24;
-	private static final int MinutesPerHour = 60;
-	private static final int SecondsPerMinute = 60;
-	private static final int MillisecondsPerSecond = 1_000;
-	private static final int MicrosecondsPerMillisecond = 1_000;
-	private static final int NanosecondsPerMicrosecond = 1_000;
-	private static final long ElapsedTimeInNanosecondsPerNanosecond = 1;
-	private static final long ElapsedTimeInNanosecondsPerMicrosecond = ElapsedTimeInNanosecondsPerNanosecond * 1_000;
-	private static final long ElapsedTimeInNanosecondsPerMillisecond = ElapsedTimeInNanosecondsPerMicrosecond * 1_000;
-	private static final long ElapsedTimeInNanosecondsPerSecond = ElapsedTimeInNanosecondsPerMillisecond * 1_000;
-	private static final long ElapsedTimeInNanosecondsPerMinute = ElapsedTimeInNanosecondsPerSecond * 60;
-	private static final long ElapsedTimeInNanosecondsPerHour = ElapsedTimeInNanosecondsPerMinute * 60;
-	private static final long ElapsedTimeInNanosecondsPerDay = ElapsedTimeInNanosecondsPerHour * 24;
-	private static final int MillisPerSecond = 1000;
-	private static final int MillisPerMinute = MillisPerSecond * 60; //     60,000
-	private static final int MillisPerHour = MillisPerMinute * 60;   //  3,600,000
-	private static final int MillisPerDay = MillisPerHour * 24;      // 86,400,000
-	private BigInteger elapsedTimeInNanoseconds;
-	private long days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds;
+	public static final TimeSpan ZERO = new TimeSpan(0);
+	//private static final int HOURS_PER_DAY = 24;
+	//private static final int MINUTES_PER_HOUR = 60;
+	//private static final int SECONDS_PER_MINUTE = 60;
+	//private static final int MILLISECONDS_PER_SECOND = 1_000;
+	//private static final int MICROSECONDS_PER_MILLISECOND = 1_000;
+	//private static final int NANOSECONDS_PER_MICROSECOND = 1_000;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND = 1;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND = ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND * TimeResolution.NANOSECONDS_PER_MICROSECOND;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND = ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND * TimeResolution.MICROSECONDS_PER_MILLISECOND;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_SECOND = ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND * TimeResolution.MILLISECONDS_PER_SECOND;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_MINUTE = ELAPSED_TIME_IN_NANOSECONDS_PER_SECOND * TimeResolution.SECONDS_PER_MINUTE;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_HOUR = ELAPSED_TIME_IN_NANOSECONDS_PER_MINUTE * TimeResolution.MINUTES_PER_HOUR;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_DAY = ELAPSED_TIME_IN_NANOSECONDS_PER_HOUR * TimeResolution.HOURS_PER_DAY;
+	private static final long ELAPSED_TIME_IN_NANOSECONDS_PER_WEEK = ELAPSED_TIME_IN_NANOSECONDS_PER_DAY * TimeResolution.DAYS_PER_WEEK;
 
-	private TimeSpan(long elapsedInNanoseconds) {
-		initialize(elapsedInNanoseconds);
+	private static final int MILLIS_PER_SECOND = TimeResolution.MILLISECONDS_PER_SECOND;                //        1_000
+	private static final int MILLIS_PER_MINUTE = MILLIS_PER_SECOND * TimeResolution.SECONDS_PER_MINUTE; //       60_000
+	private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * TimeResolution.MINUTES_PER_HOUR;     //    3_600_000
+	private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * TimeResolution.HOURS_PER_DAY;           //   86_400_000
+	private static final int MILLIS_PER_WEEK = MILLIS_PER_DAY * TimeResolution.DAYS_PER_WEEK;           //  604_800_000
+
+	private BigInteger elapsedTimeInNanoseconds;
+	private long weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds;
+
+	private TimeSpan(long elapsedTimeInNanoseconds) {
+		this(BigInteger.valueOf(elapsedTimeInNanoseconds));
 	}
 
 	private TimeSpan(BigInteger elapsedTimeInNanoseconds) {
-		this(elapsedTimeInNanoseconds.longValueExact());
+		initialize(elapsedTimeInNanoseconds.longValueExact());
 	}
 
 	public static TimeSpan Interval(double value, int scale) {
@@ -43,22 +45,28 @@ public class TimeSpan implements Comparable<TimeSpan> {
 		}
 		double tmp = value * scale;
 		double millis = tmp + (value >= 0 ? 0.5 : -0.5);
-		if ((millis > Integer.MAX_VALUE / Zero.ElapsedTimeInNanosecondsPerMillisecond) || (millis < Integer.MAX_VALUE / ElapsedTimeInNanosecondsPerMillisecond)) {
+		if ((millis > Integer.MAX_VALUE / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND) || (millis < Integer.MAX_VALUE / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND)) {
 			throw new ArithmeticException("double value out of byte range");
 		}
-		return new TimeSpan((long) millis * ElapsedTimeInNanosecondsPerMillisecond);
+		return new TimeSpan((long) millis * TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND);
 	}
 
-	public static TimeSpan fromElapsedInNanoseconds(long elapsedInNanoseconds) {
-		return new TimeSpan(elapsedInNanoseconds);
+	public static TimeSpan fromElapsedInNanoseconds(long elapsedTimeInNanoseconds) {
+		return new TimeSpan(elapsedTimeInNanoseconds);
 	}
 
 	public static Builder Builder() {
 		return new Builder();
 	}
 
+	public static void main(String[] args) {
+		TimeSpan t = Builder().milliseconds(53).weeks(44).build();
+		System.out.println("t = " + t);
+	}
+
 	private void initialize(long elapsedTimeInNanoseconds) {
 		this.elapsedTimeInNanoseconds = BigInteger.valueOf(elapsedTimeInNanoseconds);
+		this.weeks = calculateWeeks(elapsedTimeInNanoseconds);
 		this.days = calculateDays(elapsedTimeInNanoseconds);
 		this.hours = calculateHours(elapsedTimeInNanoseconds);
 		this.minutes = calculateMinutes(elapsedTimeInNanoseconds);
@@ -68,32 +76,40 @@ public class TimeSpan implements Comparable<TimeSpan> {
 		this.nanoseconds = calculateNanoseconds(elapsedTimeInNanoseconds);
 	}
 
+	private long calculateWeeks(long elapsedTimeInNanoseconds) {
+		return elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_WEEK;
+	}
+
 	private long calculateDays(long elapsedTimeInNanoseconds) {
-		return elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerDay;
+		return elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_DAY;
 	}
 
 	private long calculateHours(long elapsedTimeInNanoseconds) {
-		return (elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerHour) % HoursPerDay;
+		return (elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_HOUR) % TimeResolution.HOURS_PER_DAY;
 	}
 
 	private long calculateMinutes(long elapsedTimeInNanoseconds) {
-		return (elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerMinute) % MinutesPerHour;
+		return (elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MINUTE) % TimeResolution.MINUTES_PER_HOUR;
 	}
 
 	private long calculateSeconds(long elapsedTimeInNanoseconds) {
-		return (elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerSecond) % SecondsPerMinute;
+		return (elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_SECOND) % TimeResolution.SECONDS_PER_MINUTE;
 	}
 
 	private long calculateMilliseconds(long elapsedTimeInNanoseconds) {
-		return (elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerMillisecond) % MillisecondsPerSecond;
+		return (elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND) % TimeResolution.MILLISECONDS_PER_SECOND;
 	}
 
 	private long calculateMicroseconds(long elapsedTimeInNanoseconds) {
-		return (elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerMicrosecond) % MicrosecondsPerMillisecond;
+		return (elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND) % TimeResolution.MICROSECONDS_PER_MILLISECOND;
 	}
 
 	private long calculateNanoseconds(long elapsedTimeInNanoseconds) {
-		return (elapsedTimeInNanoseconds / ElapsedTimeInNanosecondsPerNanosecond) % NanosecondsPerMicrosecond;
+		return (elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND) % TimeResolution.NANOSECONDS_PER_MICROSECOND;
+	}
+
+	public long getWeeks() {
+		return weeks;
 	}
 
 	public long getDays() {
@@ -124,39 +140,43 @@ public class TimeSpan implements Comparable<TimeSpan> {
 		return nanoseconds;
 	}
 
+	public double getTotalTimeWeeks() {
+		return elapsedTimeInNanoseconds.doubleValue() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_WEEK;
+	}
+
 	public double getTotalTimeDays() {
-		return elapsedTimeInNanoseconds.doubleValue() / ElapsedTimeInNanosecondsPerDay;
+		return elapsedTimeInNanoseconds.doubleValue() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_DAY;
 	}
 
 	public double getTotalTimeHours() {
-		return elapsedTimeInNanoseconds.doubleValue() / ElapsedTimeInNanosecondsPerHour;
+		return elapsedTimeInNanoseconds.doubleValue() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_HOUR;
 	}
 
 	public double getTotalTimeMinutes() {
-		return elapsedTimeInNanoseconds.doubleValue() / ElapsedTimeInNanosecondsPerMinute;
+		return elapsedTimeInNanoseconds.doubleValue() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MINUTE;
 	}
 
 	public double getTotalTimeSeconds() {
-		return elapsedTimeInNanoseconds.doubleValue() / ElapsedTimeInNanosecondsPerSecond;
+		return elapsedTimeInNanoseconds.doubleValue() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_SECOND;
 	}
 
 	public long getTotalTimeMilliseconds() {
-		return elapsedTimeInNanoseconds.longValueExact() / ElapsedTimeInNanosecondsPerMillisecond;
+		return elapsedTimeInNanoseconds.longValueExact() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND;
 	}
 
 	public long getTotalTimeMicroseconds() {
-		return elapsedTimeInNanoseconds.longValueExact() / ElapsedTimeInNanosecondsPerMicrosecond;
+		return elapsedTimeInNanoseconds.longValueExact() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND;
 	}
 
 	public long getTotalTimeNanoseconds() {
-		return elapsedTimeInNanoseconds.longValueExact() / ElapsedTimeInNanosecondsPerNanosecond;
+		return elapsedTimeInNanoseconds.longValueExact() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND;
 	}
 
 	public long getNanoAdjustment() {
 		return Math.addExact(nanoseconds,
 				Math.addExact(
-						Math.multiplyExact(microseconds, NanosecondsPerMicrosecond),
-						Math.multiplyExact(milliseconds, MicrosecondsPerMillisecond * NanosecondsPerMicrosecond)
+						Math.multiplyExact(microseconds, TimeResolution.NANOSECONDS_PER_MICROSECOND),
+						Math.multiplyExact(milliseconds, TimeResolution.MICROSECONDS_PER_MILLISECOND * TimeResolution.NANOSECONDS_PER_MICROSECOND)
 				)
 		);
 	}
@@ -248,7 +268,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
 	}
 
 	public static class Builder {
-		private BigInteger days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds = BigInteger.ZERO;
+		private BigInteger weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds = BigInteger.ZERO;
 
 		private static BigInteger multiply(long... values) {
 			return Arrays.stream(values).mapToObj(BigInteger::valueOf)
@@ -262,6 +282,16 @@ public class TimeSpan implements Comparable<TimeSpan> {
 
 		private static BigInteger add(BigInteger... values) {
 			return Arrays.stream(values).reduce(BigInteger.ZERO, BigInteger::add);
+		}
+
+		public Builder weeks(BigInteger weeks) {
+			this.weeks = weeks;
+			return this;
+		}
+
+		public Builder weeks(long weeks) {
+			this.weeks = BigInteger.valueOf(weeks);
+			return this;
 		}
 
 		public Builder days(BigInteger days) {
@@ -335,15 +365,17 @@ public class TimeSpan implements Comparable<TimeSpan> {
 		}
 
 		public TimeSpan build() {
-			BigInteger dayElapsedTimeInNanoseconds = multiply(days, TimeSpan.Zero.ElapsedTimeInNanosecondsPerDay);
-			BigInteger hourElapsedTimeInNanoseconds = multiply(hours, TimeSpan.Zero.ElapsedTimeInNanosecondsPerHour);
-			BigInteger minuteElapsedTimeInNanoseconds = multiply(minutes, TimeSpan.Zero.ElapsedTimeInNanosecondsPerMinute);
-			BigInteger secondElapsedTimeInNanoseconds = multiply(seconds, TimeSpan.Zero.ElapsedTimeInNanosecondsPerSecond);
-			BigInteger millisecondElapsedTimeInNanoseconds = multiply(milliseconds, TimeSpan.Zero.ElapsedTimeInNanosecondsPerMillisecond);
-			BigInteger microsecondElapsedTimeInNanoseconds = multiply(microseconds, TimeSpan.Zero.ElapsedTimeInNanosecondsPerMicrosecond);
-			BigInteger nanosecondElapsedTimeInNanoseconds = multiply(nanoseconds, TimeSpan.Zero.ElapsedTimeInNanosecondsPerNanosecond);
+			BigInteger weekElapsedTimeInNanoseconds = multiply(weeks, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_WEEK);
+			BigInteger dayElapsedTimeInNanoseconds = multiply(days, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_DAY);
+			BigInteger hourElapsedTimeInNanoseconds = multiply(hours, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_HOUR);
+			BigInteger minuteElapsedTimeInNanoseconds = multiply(minutes, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MINUTE);
+			BigInteger secondElapsedTimeInNanoseconds = multiply(seconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_SECOND);
+			BigInteger millisecondElapsedTimeInNanoseconds = multiply(milliseconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND);
+			BigInteger microsecondElapsedTimeInNanoseconds = multiply(microseconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND);
+			BigInteger nanosecondElapsedTimeInNanoseconds = multiply(nanoseconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND);
 
 			BigInteger totalElapsed = add(
+					weekElapsedTimeInNanoseconds,
 					dayElapsedTimeInNanoseconds,
 					hourElapsedTimeInNanoseconds,
 					minuteElapsedTimeInNanoseconds,
@@ -352,7 +384,6 @@ public class TimeSpan implements Comparable<TimeSpan> {
 					microsecondElapsedTimeInNanoseconds,
 					nanosecondElapsedTimeInNanoseconds
 			);
-			System.out.println(totalElapsed);
 			return new TimeSpan(totalElapsed);
 		}
 	}

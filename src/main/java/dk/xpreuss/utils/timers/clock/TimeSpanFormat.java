@@ -2,7 +2,7 @@ package dk.xpreuss.utils.timers.clock;
 
 public class TimeSpanFormat {
 	public enum FormatPattern {
-		NONE, MINIMUM, FULL;
+		NONE, MINIMUM, MEDIUM, FULL;
 	}
 
 	//
@@ -12,22 +12,28 @@ public class TimeSpanFormat {
 	//
 	static String format(TimeSpan value, FormatPattern formatPattern) {
 		StringBuilder sb = new StringBuilder();
+		long weeks = Math.abs(value.getWeeks());
 		long days = Math.abs(value.getDays());
 		long hours = Math.abs(value.getHours());
 		long minutes = Math.abs(value.getMinutes());
 		long seconds = Math.abs(value.getSeconds());
 		long secondFractions = Math.abs(value.getNanoAdjustment());
 
-		// Pattern Full == [-]dd,HH:mm:ss.fffffffff
+		// Pattern Full == [-]ww[w]dd,HH:mm:ss.fffffffff
 		// Pattern Minimum = [-][d,]HH:mm:ss[.fffffffff]
 		final String positiveOrNegative = value.getTotalTimeSeconds() < 0 ? "-" : "";
+		final String weekDaySep = "w";
 		final String dayHourSep = ",";
 		final String hourMinuteSep = ":";
 		final String minuteSecondSep = ":";
 		final String secondFractionSep = ",";
 
 		sb.append(positiveOrNegative);
-		if (formatPattern == FormatPattern.FULL || days != 0) {
+		if(formatPattern == FormatPattern.FULL || weeks != 0) {
+			sb.append(weeks);
+			sb.append(weekDaySep);
+		}
+		if ((FormatPattern.FULL == formatPattern && FormatPattern.MINIMUM == formatPattern) || days != 0) {
 			sb.append(days);
 			sb.append(dayHourSep);
 		}
