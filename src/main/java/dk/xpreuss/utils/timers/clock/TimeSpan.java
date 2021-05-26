@@ -1,5 +1,6 @@
 package dk.xpreuss.utils.timers.clock;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Objects;
@@ -64,6 +65,18 @@ public class TimeSpan implements Comparable<TimeSpan> {
 		System.out.println("t = " + t);
 	}
 
+	private static BigInteger div(BigInteger num1, long num2) {
+		return num1.divide(BigInteger.valueOf(num2));
+	}
+
+	private static BigInteger mul(BigInteger... numbers) {
+		return Arrays.stream(numbers).reduce(BigInteger::multiply).orElseThrow(()->new IllegalArgumentException("Needs more than zero arguments"));
+	}
+
+	private static BigInteger add(BigInteger... numbers) {
+		return Arrays.stream(numbers).reduce(BigInteger::add).orElseThrow(()->new IllegalArgumentException("Needs more than zero arguments"));
+	}
+
 	private void initialize(long elapsedTimeInNanoseconds) {
 		this.elapsedTimeInNanoseconds = BigInteger.valueOf(elapsedTimeInNanoseconds);
 		this.weeks = calculateWeeks(elapsedTimeInNanoseconds);
@@ -116,10 +129,6 @@ public class TimeSpan implements Comparable<TimeSpan> {
 		return days;
 	}
 
-	public long getDays(boolean removeWeeks) {
-		return removeWeeks ? getDays() : getDays() / TimeResolution.DAYS_PER_WEEK;
-	}
-
 	public long getHours() {
 		return hours;
 	}
@@ -165,15 +174,15 @@ public class TimeSpan implements Comparable<TimeSpan> {
 	}
 
 	public long getTotalTimeMilliseconds() {
-		return elapsedTimeInNanoseconds.longValueExact() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND;
+		return div(elapsedTimeInNanoseconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MILLISECOND).longValueExact();
 	}
 
 	public long getTotalTimeMicroseconds() {
-		return elapsedTimeInNanoseconds.longValueExact() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND;
+		return div(elapsedTimeInNanoseconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_MICROSECOND).longValueExact();
 	}
 
 	public long getTotalTimeNanoseconds() {
-		return elapsedTimeInNanoseconds.longValueExact() / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND;
+		return div(elapsedTimeInNanoseconds, TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_NANOSECOND).longValueExact();
 	}
 
 	public long getNanoAdjustment() {
