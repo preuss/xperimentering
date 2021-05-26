@@ -81,7 +81,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
 	}
 
 	private long calculateDays(long elapsedTimeInNanoseconds) {
-		return elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_DAY;
+		return elapsedTimeInNanoseconds / TimeSpan.ELAPSED_TIME_IN_NANOSECONDS_PER_DAY % TimeResolution.DAYS_PER_WEEK;
 	}
 
 	private long calculateHours(long elapsedTimeInNanoseconds) {
@@ -114,6 +114,10 @@ public class TimeSpan implements Comparable<TimeSpan> {
 
 	public long getDays() {
 		return days;
+	}
+
+	public long getDays(boolean removeWeeks) {
+		return removeWeeks ? getDays() : getDays() / TimeResolution.DAYS_PER_WEEK;
 	}
 
 	public long getHours() {
