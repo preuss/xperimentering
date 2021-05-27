@@ -6,6 +6,14 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * TODO: To use ISO-8601-format
+ * The distinction between "Calendar Time" (Years, Months, etc) and "Absolute Time" (Hours, Minutes, Seconds, etc) is sometimes an important one.
+ * As an example, some people might complain about having 13 mortgage payments some years if they paid every 30 days as opposed to every month.
+ *
+ * https://stackoverflow.com/questions/26265751/what-is-the-value-of-the-iso-8601-duration-p1m-in-seconds
+ *
+ */
 public class TimeSpan implements Comparable<TimeSpan> {
 	public static final TimeSpan ZERO = new TimeSpan(0);
 	//private static final int HOURS_PER_DAY = 24;
@@ -70,11 +78,11 @@ public class TimeSpan implements Comparable<TimeSpan> {
 	}
 
 	private static BigInteger mul(BigInteger... numbers) {
-		return Arrays.stream(numbers).reduce(BigInteger::multiply).orElseThrow(()->new IllegalArgumentException("Needs more than zero arguments"));
+		return Arrays.stream(numbers).reduce(BigInteger::multiply).orElseThrow(() -> new IllegalArgumentException("Needs more than zero arguments"));
 	}
 
 	private static BigInteger add(BigInteger... numbers) {
-		return Arrays.stream(numbers).reduce(BigInteger::add).orElseThrow(()->new IllegalArgumentException("Needs more than zero arguments"));
+		return Arrays.stream(numbers).reduce(BigInteger::add).orElseThrow(() -> new IllegalArgumentException("Needs more than zero arguments"));
 	}
 
 	private void initialize(long elapsedTimeInNanoseconds) {
