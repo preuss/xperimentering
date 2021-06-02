@@ -1,7 +1,7 @@
 package dk.xpreuss.utils.numbers;
 
 public class UnsignedInteger extends Number implements Comparable<UnsignedInteger> {
-	public static final UnsignedInteger MAX_VALUE = new UnsignedInteger(0x80000000);
+	public static final UnsignedInteger MAX_VALUE = new UnsignedInteger(0xFFFFFFFF);
 	public static final UnsignedInteger MIN_VALUE = new UnsignedInteger(0x00000000);
 
 	private final int value;
