@@ -10,7 +10,7 @@ public class UnsignedInteger extends Number implements Comparable<UnsignedIntege
 		this.value = unsignedIntValue;
 	}
 
-	public static UnsignedInteger from(int unsignedIntValue) {
+	public static UnsignedInteger valueOf(int unsignedIntValue) {
 		return new UnsignedInteger(unsignedIntValue);
 	}
 
@@ -34,13 +34,69 @@ public class UnsignedInteger extends Number implements Comparable<UnsignedIntege
 		return Integer.toUnsignedLong(value);
 	}
 
+	/**
+	 * Compares two {@code UnsignedInteger} objects numerically.
+	 *
+	 * @param another the {@code UnsignedInteger} to be compared.
+	 * @return the value {@code 0} if this {@code Integer} is
+	 * equal to the argument {@code Integer}; a value less than
+	 * {@code 0} if this {@code Integer} is numerically less
+	 * than the argument {@code Integer}; and a value greater
+	 * than {@code 0} if this {@code Integer} is numerically
+	 * greater than the argument {@code Integer} (signed
+	 * comparison).
+	 */
 	@Override
-	public int compareTo(UnsignedInteger other) {
-		return Integer.compareUnsigned(this.value, other.value);
+	public int compareTo(UnsignedInteger another) {
+		return compare(this.value, another.value);
 	}
 
-	public UnsignedInteger add(UnsignedInteger second) {
-		return add(this, second);
+	/**
+	 * Compares a {@code UnsignedInteger} with a {@code int} objects numerically.
+	 *
+	 * @param anotherValue the {@code int} to be compared.
+	 * @return the value {@code 0} if this {@code Integer} is
+	 * equal to the argument {@code Integer}; a value less than
+	 * {@code 0} if this {@code Integer} is numerically less
+	 * than the argument {@code Integer}; and a value greater
+	 * than {@code 0} if this {@code Integer} is numerically
+	 * greater than the argument {@code Integer} (signed
+	 * comparison).
+	 */
+	public int compareTo(int anotherValue) {
+		return compare(this.value, anotherValue);
+	}
+
+	/**
+	 * Compares two {@code int} values numerically treating the values
+	 * as unsigned.
+	 * <p>
+	 * The value returned is identical to what would be returned by:
+	 * <pre>
+	 *    UnsignedInteger.valueOf(x).compareTo(Integer.valueOf(y))
+	 * </pre>
+	 *
+	 * @param first  the first {@code UnsignedInteger} to compare
+	 * @param second the second {@code UnsignedInteger} to compare
+	 * @return the value {@code 0} if {@code x == y}; a value less
+	 * than {@code 0} if {@code x < y} as unsigned values; and
+	 * a value greater than {@code 0} if {@code x > y} as
+	 * unsigned values
+	 */
+	public static int compare(UnsignedInteger first, UnsignedInteger second) {
+		return compare(first.value, second.value);
+	}
+
+	public static int compare(int firstValue, int secondValue) {
+		return Integer.compareUnsigned(firstValue, secondValue);
+	}
+
+	public static int compare(int firstValue, UnsignedInteger second) {
+		return compare(firstValue, second.value);
+	}
+
+	public UnsignedInteger add(UnsignedInteger anotherUnsignedInteger) {
+		return add(this, anotherUnsignedInteger);
 	}
 
 	public UnsignedInteger add(int secondUnsignedIntValue) {
