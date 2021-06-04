@@ -1,0 +1,36 @@
+c# format
+	-    {paramIndex[,alignment][:formatString]}
+
+
+Java MessageFormat
+	-    {argumentIndex[,formatType[,formatStyle]}
+	-    {index[,type[,subformat]}
+
+Java printf
+	-    % [flags] [width] [.precision] conversion-character
+
+
+Complete all:
+	-    {paramIndex[,alignment][:formatString]}
+	-    {argumentIndex[,formatType[,formatStyle]}
+	-    {index[,type[,subformat]}
+	-    % [flags] [width] [.precision] conversion-character
+My own
+	-    {paramName[,alignment][:formatString]}
+
+
+
+All formal parameters:
+	paramIndex			number, index of the argument, counting from zero (0)
+	argumentIndex		number, index of the argument, counting from zero (0)
+	index				number, index of the argument, counting from zero (0)
+	paramName			alphanumeric, starting with alpha, key of the argument, retrieved from hashmap
+	name			alphanumeric, starting with alpha, key of the argument, retrieved from hashmap
+
+Difference between parameter and argument:
+	parameter:		the formal definition of function variables; ex. public int add(param1, param2){...}
+	argument:		the actual value of variables; ex. int arg1 = 4; int arg2 = 2; int sum = add(arg1, args2);
+
+A parameter can be named or indexed.
+If only indexed, then we only need an index list / array.
+If named, we can use both named and indexed, we only need a Map with key String.
