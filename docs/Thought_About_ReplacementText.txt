@@ -34,3 +34,34 @@ Difference between parameter and argument:
 A parameter can be named or indexed.
 If only indexed, then we only need an index list / array.
 If named, we can use both named and indexed, we only need a Map with key String.
+
+
+
+# From the com.ibm.icu.text.MessageFormate.java:
+
+## Patterns and Their Interpretation
+
+### MessageFormat uses patterns of the following form:
+	message = messageText (argument messageText)*
+	argument = noneArg | simpleArg | complexArg
+	complexArg = choiceArg | pluralArg | selectArg | selectordinalArg
+
+	noneArg = '{' argNameOrNumber '}'
+	simpleArg = '{' argNameOrNumber ',' argType [',' argStyle] '}'
+	choiceArg = '{' argNameOrNumber ',' "choice" ',' choiceStyle '}'
+	pluralArg = '{' argNameOrNumber ',' "plural" ',' pluralStyle '}'
+	selectArg = '{' argNameOrNumber ',' "select" ',' selectStyle '}'
+	selectordinalArg = '{' argNameOrNumber ',' "selectordinal" ',' pluralStyle '}'
+
+	choiceStyle: see {@link ChoiceFormat}
+	pluralStyle: see {@link PluralFormat}
+	selectStyle: see {@link SelectFormat}
+
+	argNameOrNumber = argName | argNumber
+	argName = [^[[:Pattern_Syntax:][:Pattern_White_Space:]]]+
+	argNumber = '0' | ('1'..'9' ('0'..'9')*)
+
+	argType = "number" | "date" | "time" | "spellout" | "ordinal" | "duration"
+	argStyle = "short" | "medium" | "long" | "full" | "integer" | "currency" | "percent" | argStyleText | "::" argSkeletonText
+	
+	

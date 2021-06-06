@@ -1,4 +1,4 @@
-package dk.xpreuss.utils.numbers;
+package dk.xpreuss.utils.numbers.unsigned;
 
 public class UnsignedInteger extends Number implements Comparable<UnsignedInteger> {
 	public static final UnsignedInteger MAX_VALUE = new UnsignedInteger(0xFFFFFFFF);

@@ -13,6 +13,7 @@ import java.util.Optional;
  *
  * https://stackoverflow.com/questions/26265751/what-is-the-value-of-the-iso-8601-duration-p1m-in-seconds
  *
+ * https://support.sas.com/documentation/cdl/en/lrdict/64316/HTML/default/viewer.htm#a003169814.htm
  */
 public class TimeSpan implements Comparable<TimeSpan> {
 	public static final TimeSpan ZERO = new TimeSpan(0);
