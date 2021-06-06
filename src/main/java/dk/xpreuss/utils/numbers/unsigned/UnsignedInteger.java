@@ -1,6 +1,8 @@
 package dk.xpreuss.utils.numbers.unsigned;
 
-public class UnsignedInteger extends Number implements Comparable<UnsignedInteger> {
+import java.math.BigInteger;
+
+public class UnsignedInteger extends UnsignedNumber<UnsignedInteger> {
 	public static final UnsignedInteger MAX_VALUE = new UnsignedInteger(0xFFFFFFFF);
 	public static final UnsignedInteger MIN_VALUE = new UnsignedInteger(0x00000000);
 
@@ -32,6 +34,11 @@ public class UnsignedInteger extends Number implements Comparable<UnsignedIntege
 	@Override
 	public double doubleValue() {
 		return Integer.toUnsignedLong(value);
+	}
+
+	@Override
+	public BigInteger bigIntegerValue() {
+		return BigInteger.valueOf(longValue());
 	}
 
 	/**
@@ -93,6 +100,29 @@ public class UnsignedInteger extends Number implements Comparable<UnsignedIntege
 
 	public static int compare(int firstValue, UnsignedInteger second) {
 		return compare(firstValue, second.value);
+	}
+
+	/**
+	 * Compares this object to the specified object.  The result is
+	 * {@code true} if and only if the argument is not
+	 * {@code null} and is an {@code Integer} object that
+	 * contains the same {@code int} value as this object.
+	 *
+	 * @param obj the object to compare with.
+	 * @return {@code true} if the objects are the same;
+	 * {@code false} otherwise.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof UnsignedInteger) {
+			return equals((UnsignedInteger) obj);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean equals(UnsignedInteger obj) {
+		return value == obj.intValue();
 	}
 
 	public UnsignedInteger add(UnsignedInteger anotherUnsignedInteger) {
