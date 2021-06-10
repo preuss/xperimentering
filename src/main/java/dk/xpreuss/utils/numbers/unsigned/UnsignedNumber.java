@@ -3,7 +3,13 @@ package dk.xpreuss.utils.numbers.unsigned;
 import java.math.BigInteger;
 
 /**
- * See https://github.com/ccarpenter04/Unsigned-Integers for ideas
+ * For ideas see:
+ * See https://github.com/ccarpenter04/Unsigned-Integers
+ * See https://github.com/jOOQ/jOOU
+ * See https://github.com/nervous-systems/juint
+ * See https://github.com/sandomingo/Javauint
+ *
+ *
  * @param <T>
  */
 public abstract class UnsignedNumber<T extends UnsignedNumber> extends Number implements Comparable<T> {
