@@ -43,6 +43,10 @@ public class StopWatch implements IStopWatch {
 		return new StopWatch("", tickProvider);
 	}
 
+	public static IStopWatch from() {
+		return from("");
+	}
+
 	public static IStopWatch from(String name) {
 		return new StopWatch(name, new NanoTickProvider());
 	}
