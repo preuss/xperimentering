@@ -33,6 +33,9 @@ https://github.com/spidim/ConfigurationLoader?ref=hackernoon.com
 
 http://rosettacode.org/wiki/Finite_state_machine
 
+https://hackernoon.com/high-performance-text-parsing-using-finite-state-machines-fsm-6d3m33j9
+https://github.com/spidim/ConfigurationLoader/blob/master/src/main/java/me/sdimopoulos/config/parser/FsmBuilder.java?ref=hackernoon.com
+
 
 Videos:
 https://www.youtube.com/watch?v=PK3wL7DXuuw
