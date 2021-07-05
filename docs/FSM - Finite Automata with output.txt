@@ -1,0 +1,44 @@
+FSM = Transducer = Finite automatat with output = Finite automata + Ouput Capability;
+======================================================================================
+
+Description of finite automata with output machine M is defined by 6-tuples are as follows;
+
+M = (Q, Σ, δ, ∆, λ, q0)
+Where, each tuple have its specification and meaning.
+
+Q: It represents the finite non-empty set of states.
+Σ: (Sigma) It presents the finite non-empty set of the input alphabet.
+δ : (Delta) It represents the state transition function. The state transition function takes the current state from Q and an input alphabet from Σ and returns the new set of output alphabets and the next state. Therefore, it can be seen as a function which maps an ordered sequence of input alphabets into a corresponding sequence, or set, of output events.
+Q × Σ  → Q is the next-state function.
+∆: (Delta uppercase) It presents the output alphabet.
+λ : (Lambda) It represent the output function. Its mathematically denotes as;
+Q → ∆
+q0: It is the initial state (which may be fixed or variable depends on machine behavior).
+
+If the FSM is given input letter a when in state q, it enters state δ(q, a). While in state q it produces the output letter λ(q).
+
+
+Characteristics of Finite automata:
+-----------------------------------
+Finite automata with output machine have the following characteristic;
+
+1.	Finite automata with output machines do not have final state/states.
+2.	Machine generates an output on every input. The value of the output is a function of current state and the current input.
+3.	Finite automata with output machines are characterized by two behaviors;
+		I.	State transaction function (δ)[ State transition function (δ) is also known as STF]
+		II.	Output function (λ) [Output function is also known as machine function (MAF)]
+			δ: Σ × Q → Q
+			λ: Σ × Q → O	[For Mealy machine]
+			λ: Q → O		[For Moore machine]
+
+
+Type of finite automata with output:
+-------------------------------------
+There are two types of finite automata with output:
+
+1.	Mealy machine: Output is associated with transition.
+	λ: Σ × Q → O
+	Set of output alphabet O can be different from the set of input alphabet Σ.
+
+2.	Moore machine: Output is associated with state.
+	λ: Q → O

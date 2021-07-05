@@ -1,0 +1,106 @@
+Different implementations:
+https://grrinchas.github.io/posts/dfa-in-java
+https://grrinchas.github.io/posts/dfa-theory
+https://gist.github.com/grrinchas/534614339f786c7528a588426f08d4ef
+
+http://ssomayyajula.github.io/posts/2015-10-18-deterministic-finite-automata-with-java.html
+https://github.com/sivawashere/dfa
+
+https://n4sw.wordpress.com/2014/04/27/deterministic-finite-automaton-in-java-8/
+
+https://stackoverflow.com/questions/1870519/modelling-a-finite-deterministic-automaton-via-this-data
+
+https://github.com/kashaf12/DFA-Minimization-Java
+
+https://codereview.stackexchange.com/questions/186816/simple-dfa-simulator-in-java
+
+https://github.com/CristianAbrante/PushdownAutomaton
+
+https://github.com/artisan1218/Automata
+
+https://bing101.github.io/DFA-simulator/
+
+https://www.baeldung.com/java-finite-automata
+
+https://www.reddit.com/r/learnprogramming/comments/7d9wgv/homework_eli5_style_dfa_deterministic_finite/
+https://gist.github.com/anonymous/fad015cd1b5a3c0a38a1a310873745a6
+
+https://github.com/blitvin/fsm4java
+
+
+https://hackernoon.com/high-performance-text-parsing-using-finite-state-machines-fsm-6d3m33j9
+https://github.com/spidim/ConfigurationLoader?ref=hackernoon.com
+
+http://rosettacode.org/wiki/Finite_state_machine
+
+
+Videos:
+https://www.youtube.com/watch?v=PK3wL7DXuuw
+
+
+Simulator:
+http://automatonsimulator.com/
+
+Math DFA theory:
+https://www.assignmentpoint.com/science/computer/deterministic-finite-automaton-dfa.html
+http://www.cse.chalmers.se/~coquand/AUTOMATA/o2.pdf
+http://web.cecs.pdx.edu/~sheard/course/CS581/notes/DfaDefined.pdf
+https://swaminathanj.github.io/fsm/dfa.html
+https://www.tutorialandexample.com/finite-automata/
+
+DFA - Deterministic Finite Automaton:
+=====================================
+
+
+A DFA is a quintuple A = (Q, Σ, δ, q0, F)
+hvor:
+- Q is the sets of *state*
+- Σ (Sigma) is the *alphabet* (af input symboler)
+- δ (delta): Q × Σ → Q is the transition function
+- q0 ∈ Q -- the start state
+- F ⊆ Q -- final states
+
+Example:
+--------
+Q={q0,q1,q2}
+Σ={0, 1}
+q0=q0
+F={q2}
+
+Transition table:
+	0	1
+Q0	Q1	Q0
+→Q1	Q2	Q1
+*Q2	Q2	Q2
+
+The → indicates / denoted by the initial / start state: here q0
+The * indicates / denoted by the final state(s) (here only one final state q1)
+
+Transition diagram (Boller
+
+
+DFA's as Programs:
+------------------
+data DFA q s = 
+	DFA [q]			-- states
+	[s]				-- symbols
+	(q -> s -> q)	-- delta
+	q				-- start state
+	[q]				-- accept states
+Note that the States and Symbols can be any type.
+
+DFA Mathematically represented as:
+==================================
+So a DFA is mathematically represented as a 5-uple (Q, Σ, δ, q0, F)
+	Meaning, it has five elements and order of the elements matter, thus (Q,Σ,δ,q0,F)≠(Σ,Q,δ,q0,F).
+The transition function δ is a function in
+Q × Σ → Q
+Q × Σ is the set of 2-tuples (q, a) with q∈Q and a∈Σ
+
+The term "deterministic" refers to the fact that each string, and thus each state sequence, is unique. In a DFA, a string of  symbols is parsed through DFA automataa, and each input symbol will move to the next state that can be determined.
+A DFA can be represented by a 5-tuple (Q, ∑, δ, q0, F) where −
+	• Q is a finite set of states.
+	• ∑ is a finite set of symbols called the alphabet.
+	• δ is the transition function where δ: Q × ∑ → Q
+	• q0 is the initial state from where any input is processed (q0 ∈ Q).
+	• F is a set of final state/states of Q (F ⊆ Q).
