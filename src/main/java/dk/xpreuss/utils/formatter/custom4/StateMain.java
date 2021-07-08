@@ -12,15 +12,17 @@ public class StateMain {
 
 		FSM fsm = new FSM();
 
-		State q0 = new State();
-		fsm.setInitialState(q0);
-
+		final State q0 = new State();
 		State q1 = new State();
 		State q2 = new State();
 		State q3 = new State();
 		State q4 = new State();
 		State q5 = new State();
 
+		// Initial single state
+		fsm.setInitialState(q0);
+
+		// All the states
 		fsm.addState(0, q0);
 		fsm.addState(1, q1);
 		fsm.addState(2, q2);
@@ -28,10 +30,13 @@ public class StateMain {
 		fsm.addState(4, q4);
 		fsm.addState(5, q5);
 
+		// All the legal final states
+		// F is the set of final states
 		fsm.addFinalState(q4);
 		fsm.addFinalState(q5);
 
-		fsm.addTransition(q0, )
+		// All the states transitions.
+		//fsm.addTransition(q0, )
 
 		List<String> patternList = fsm.parsePattern(strPattern);
 		patternList.stream().forEach(System.out::println);
