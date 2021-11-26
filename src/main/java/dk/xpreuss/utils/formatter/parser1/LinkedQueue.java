@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 public class LinkedQueue<E> implements Queue<E> {
 	transient int size = 0;
+	transient int maxSize;
 
 	/**
 	 * Pointer to first node.
@@ -21,6 +22,10 @@ public class LinkedQueue<E> implements Queue<E> {
 	 * Constructs an empty queue
 	 */
 	public LinkedQueue() {
+	}
+
+	public LinkedQueue(int maxSize) {
+		this.maxSize = maxSize;
 	}
 
 	/**
@@ -94,6 +99,7 @@ public class LinkedQueue<E> implements Queue<E> {
 
 	@Override
 	public void enqueue(E item) {
+		if(isFull()) throw new FullQueueException();
 		linkLast(item);
 	}
 
@@ -140,7 +146,7 @@ public class LinkedQueue<E> implements Queue<E> {
 
 	@Override
 	public boolean isFull() {
-		return false;
+		return this.maxSize > 0 && this.size >= this.maxSize;
 	}
 
 	@Override

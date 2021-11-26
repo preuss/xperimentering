@@ -32,8 +32,7 @@ public class Lexer {
 	public static void main(String[] args) {
 
 		LinkedQueue<String> x = new LinkedQueue<>();
-		//x.enqueue("Hello world æøå '❤\uD83D\uDC95'");
-		x.enqueue("Hello world");
+		x.enqueue("Hello World!, other words");
 		x.enqueue("Second");
 		x.enqueue("Last");
 		System.out.println("Is empty: " +x.isEmpty());
@@ -43,5 +42,7 @@ public class Lexer {
 		System.out.println("x.peek(3) = " + x.peekRange(3));
 		System.out.println("x.peek(0) = " + x.peekRange(0));
 		System.out.println(x);
+
+
 	}
 }
