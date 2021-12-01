@@ -2,7 +2,7 @@ package dk.xpreuss.utils.formatter;
 
 import java.util.Iterator;
 
-class StringCodepointsIterable implements Iterable<String> {
+public class StringCodepointsIterable implements Iterable<String> {
 	public class StringCodepointsIterator implements Iterator<String> {
 		private int index = 0;
 

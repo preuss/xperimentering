@@ -1,48 +1,60 @@
 package dk.xpreuss.utils.formatter.parser1;
 
-import java.io.BufferedReader;
-import java.io.Reader;
+import dk.xpreuss.utils.formatter.CodepointStream;
+
+import java.io.*;
 import java.util.*;
 
 public class Lexer {
+	private static final int DEFAULT_BUFFER_SIZE = 2;
 	private int bufferSize;
 	final private Queue<Integer> bufferdQueue;
 
-	private Reader reader;
+	private CodepointStream reader;
 
+	public Lexer(Reader reader) {
+		this(reader, DEFAULT_BUFFER_SIZE);
+	}
 	public Lexer(Reader reader, int bufferSize) {
 		if (bufferSize < 0) throw new IllegalStateException();
 		this.bufferSize = bufferSize;
 		bufferdQueue = new LinkedQueue<Integer>();
-		this.reader = reader;
+		this.reader = new CodepointStream(reader);
 	}
 
-	public int peekNextChar() {
+	private int peekNextChar() throws IOException {
+		if(!bufferdQueue.isEmpty()) {
+			bufferdQueue.enqueue(reader.read());
+		}
 		return bufferdQueue.peek();
 	}
 
-	public List<Integer> peekRange(int count) {
+	private List<Integer> peekRange(int count) {
 		return bufferdQueue.peekRange(count);
 	}
 
-	public int next() {
+	private int nextChar() {
 		return bufferdQueue.dequeue();
 	}
 
+	public boolean isNextToken() {
+		return false;
+	}
+	public Token nextToken() {
+		throw new IllegalStateException();
+	}
+
 	public static void main(String[] args) {
+		System.out.println("Start -->");
+		String formattableString = "Hello World I am here.";
+		Reader formattableStringReader = new StringReader(formattableString);
+		Lexer lexer = new Lexer(formattableStringReader);
+		while(lexer.isNextToken()) {
+			Token token = lexer.nextToken();
+			System.out.println(token);
+		}
 
-		LinkedQueue<String> x = new LinkedQueue<>();
-		x.enqueue("Hello World!, other words");
-		x.enqueue("Second");
-		x.enqueue("Last");
-		System.out.println("Is empty: " +x.isEmpty());
-		System.out.println("Is full: " + x.isFull());
-		System.out.println("Size = " + x.size());
-		System.out.println("x.peek() = " + x.peek());
-		System.out.println("x.peek(3) = " + x.peekRange(3));
-		System.out.println("x.peek(0) = " + x.peekRange(0));
-		System.out.println(x);
-
-
+		System.out.println("--> End");
+		//InputStreamReader
 	}
 }

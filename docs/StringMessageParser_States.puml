@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+scale max 1170 height
+
+
+[*] --> Text
+
+state Text {
+	Text : This is all except \nQuote, StartTag or EndTag
+}
+
+state StartTag {
+}
+
+state EndTag {
+}
+
+Text --> StartTag
+StartTag --> s
+
+
+@enduml

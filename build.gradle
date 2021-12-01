@@ -20,7 +20,7 @@ java {
 	*/
 }
 application {
-	applicationDefaultJvmArgs = ["--add-opens", "--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"]
+	//applicationDefaultJvmArgs = ["--add-opens", "--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED"]
 }
 
 /**
@@ -52,7 +52,9 @@ application {
 	//applicationDefaultJvmArgs = ["--add-opens java.base/jdk.internal.loader=ALL-UNNAMED"]
 	//jvmArgs = ['-Xmx4096m','--add-opens java.base/jdk.internal.loader=ALL-UNNAMED']
 	//mainClassName='dk.xpreuss.utils.formatter.custom.MessageFormatter'
-	mainClass='dk.xpreuss.utils.formatter.custom.MessageFormatter'
+	//mainClass='dk.xpreuss.utils.formatter.custom.MessageFormatter'
+	mainClass='dk.xpreuss.utils.formatter.parser1.SourceScanner'
+
 }
 
 dependencies {
@@ -91,6 +93,7 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
 /*
 tasks.withType( JavaCompile ).configureEach {
 	options.forkOptions.jvmArgs.addAll( ['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'] )
@@ -98,8 +101,8 @@ tasks.withType( JavaCompile ).configureEach {
 */
 
 println "GRADLE_OPTS: " + System.getenv("GRADLE_OPTS")
-//println "File encoding: " + System.getProperty("file.encoding")
-//println "file.encoding sys property = " + System.properties["file.encoding"]
+println "File encoding: " + System.getProperty("file.encoding")
+println "System properties = " + System.properties
 println "GRADLE_OPTS env variable = " + System.getenv("GRADLE_OPTS")
 println "JAVA_TOOL_OPTIONS env variable = " + System.getenv("JAVA_TOOL_OPTIONS")
 println "UTF-8 test: ↓"

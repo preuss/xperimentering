@@ -37,7 +37,7 @@ public class StopWatchTest {
 
 	@BeforeEach
 	void setupThis() {
-		System.out.println("@BeforeEach executred");
+		System.out.println("@BeforeEach executed");
 	}
 
 	@Test

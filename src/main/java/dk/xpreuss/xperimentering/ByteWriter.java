@@ -114,7 +114,7 @@ public abstract class ByteWriter implements Closeable, Flushable {
 	 * the object in this field rather than {@code this} or a synchronized
 	 * method.
 	 */
-	protected Object lock;
+	protected final Object lock;
 
 	/**
 	 * Creates a new character-stream bytewriter whose critical sections will
