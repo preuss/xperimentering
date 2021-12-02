@@ -29,7 +29,7 @@ public class Main {
 		char []ww = new char[] {'a', 'b'};
 		Readable reader = new BufferedReader(new StringReader(str));
 		final CharBuffer buf = CharBuffer.wrap(ww) ;
-		buf.limit()
+		//buf.limit()
 		System.out.println("BUFFER: " + buf);
 		System.out.println(reader.read(buf));
 		//buf.rewind();
@@ -37,7 +37,7 @@ public class Main {
 		System.out.println(reader.read(buf));
 		//buf.rewind().position(1);
 		buf.rewind().position(1);
-		System.out.println("Buffer: -->" + buf.toString() + "<--");
+		System.out.println("Buffer: -->" + buf + "<--");
 	}
 
 	public static boolean isNewLine(char currentChar) {
