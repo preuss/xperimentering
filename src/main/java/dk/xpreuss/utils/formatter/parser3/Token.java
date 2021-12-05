@@ -1,2 +1,5 @@
-package dk.xpreuss.utils.formatter.parser3;public class Token {
+package dk.xpreuss.utils.formatter.parser3;
+
+public class Token {
+	//private
 }

@@ -1,2 +1,8 @@
-package dk.xpreuss.utils.formatter.parser3;public class Lexer {
+package dk.xpreuss.utils.formatter.parser3;
+
+public interface ILexer {
+	Token readNext();
+	Token peekNext();
+
+
 }
