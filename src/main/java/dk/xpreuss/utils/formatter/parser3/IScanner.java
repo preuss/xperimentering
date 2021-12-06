@@ -4,6 +4,9 @@ import dk.xpreuss.utils.formatter.parser1.CodePoint;
 
 import java.util.List;
 
+/**
+ * @author preuss¤Overwatch
+ */
 public interface IScanner {
 	/**
 	 * Tells if there is any left chars.
