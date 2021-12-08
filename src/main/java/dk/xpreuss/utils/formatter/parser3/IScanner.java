@@ -57,5 +57,5 @@ public interface IScanner {
 	 * Pointer will not change if more calls to next() than chars exists, where next() returns null.
 	 * @return the pointer index of current char
 	 */
-	int getPointer();
+	int getPosition();
 }
