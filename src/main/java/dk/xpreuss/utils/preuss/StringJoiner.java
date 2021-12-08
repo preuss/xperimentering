@@ -181,6 +181,14 @@ public final class StringJoiner {
 		return this;
 	}
 
+	public <T> StringJoiner addIfTrue(CharSequence prefix, T newElement, Function<T, Boolean> testIfTrue) {
+		if(testIfTrue.apply(newElement)) {
+			return addContatenated(prefix, String.valueOf(newElement));
+		} else {
+			return this;
+		}
+	}
+
 	public <T> StringJoiner addTrueElseOther(CharSequence prefix, T newElement, CharSequence newOtherElement,
 	                                         Function<T, Boolean> testIfNewElement) {
 		return testIfNewElement.apply(newElement) ?

@@ -3,23 +3,25 @@ package dk.xpreuss.utils.formatter.parser3;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
 import dk.xpreuss.utils.preuss.StringJoiner;
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.Objects;
 
 public class Token {
 	private final TokenType type;
 	private final TokenSubType subType;
+	private final CharSequence value;
 	private final int position;
 	private final int codePointCount;
 
 	public Token(TokenType type, int position) {
-		this.type = type;
-		this.subType = null;
-		this.position = position;
-		this.codePointCount = 0;
+		this(type, null, null, position, 0);
 	}
 
-	public Token(TokenType tokenType, TokenSubType tokenSubType, int position, int codePointCount) {
-		this.type = tokenType;
+	public Token(TokenType tokenType, TokenSubType tokenSubType, CharSequence value, int position, int codePointCount) {
+		this.type = Objects.requireNonNull(tokenType);
 		this.subType = tokenSubType;
+		this.value = value;
 		this.position = position;
 		this.codePointCount = codePointCount;
 	}
@@ -46,8 +48,9 @@ public class Token {
 		joiner
 				.add("type=" + type)
 				.addIfNotEmpty("subType=", subType)
+				.addIfNotEmpty("value=", Objects.requireNonNullElse(value, "").toString().trim())
 				.add("position=" + position)
-				.addTrueElseOther("codePointCount=", codePointCount, "EMPTY", count -> count > 0);
+				.addIfTrue("codePointCount=", codePointCount, value -> value > 0);
 		return joiner.toString();
 	}
 }
