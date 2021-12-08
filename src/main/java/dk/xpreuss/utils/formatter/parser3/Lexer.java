@@ -9,7 +9,7 @@ import dk.xpreuss.utils.formatter.parser3.tokentypes.WhiteSpaceTokenSubType;
 
 import java.util.List;
 
-public class Lexer implements ILexer{
+public class Lexer implements ILexer {
 
 	private final IScanner sourceScanner;
 
@@ -19,25 +19,28 @@ public class Lexer implements ILexer{
 
 	@Override
 	public Token readNext() {
-		if(sourceScanner.isEof()) {
+		if (sourceScanner.isEof()) {
 			Token found = new Token(TokenType.END_OF_SOURCE, sourceScanner.getPosition());
 		}
-		try(ITokenizer tokenizer = new NewLineTokenizer()) {
-			if(tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax()))) {
+		try (ITokenizer tokenizer = new NewLineTokenizer()) {
+			if (tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax()))) {
 				TokenizedToken tokenizedToken = tokenizer.toTokenType(sourceScanner.peekCodePoint(tokenizer.needMax()));
-				int pos = sourceScanner.getPosition();
+				int position = sourceScanner.getPosition();
 				// Consume.
 				sourceScanner.readCodePoint(tokenizedToken.getUsingCodePointsCount());
-				Token token = new Token(tokenizedToken.getTokenType(), tokenizedToken.getTokenSubType(), pos,
+				Token token = new Token(
+						tokenizedToken.getTokenType(),
+						tokenizedToken.getTokenSubType(),
+						position,
 						tokenizedToken.getUsingCodePointsCount());
 				return token;
 			}
 		}
-		while(!sourceScanner.isEof()) {
+		while (!sourceScanner.isEof()) {
 			CodePoint current = sourceScanner.next();
 
 		}
-		if(sourceScanner.isEof()) {
+		if (sourceScanner.isEof()) {
 			return new Token(TokenType.END_OF_SOURCE, sourceScanner.getPosition());
 		}
 		throw new IllegalStateException();
@@ -56,9 +59,9 @@ public class Lexer implements ILexer{
 	public static void main(String[] args) {
 		Lexer lexer = new Lexer(new StringScanner("\n\n\r\r\nHello World!"));
 		Token next = null;
-		while((next = lexer.readNext()).getType() != null) {
+		while ((next = lexer.readNext()).getType() != null) {
 			System.out.println(next);
-			if(next.getType() == TokenType.END_OF_SOURCE) break;
+			if (next.getType() == TokenType.END_OF_SOURCE) break;
 		}
 	}
 }

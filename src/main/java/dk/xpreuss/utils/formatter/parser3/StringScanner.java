@@ -50,7 +50,7 @@ public class StringScanner implements IScanner {
 		final int minEndIndex = Integer.min(position + nextCount, value.length());
 		if (hasNext()) {
 			List<CodePoint> retVal = value.substring(position, minEndIndex).chars().mapToObj(CodePoint::wrap).toList();
-			position += minEndIndex;
+			position = minEndIndex;
 			return retVal;
 		} else {
 			return new ArrayList<>(0);

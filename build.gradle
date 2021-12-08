@@ -111,6 +111,7 @@ def updateVersionProperties() {
 	def major = versionProps['version.major'] as Integer
 	def minor = versionProps['version.minor'] as Integer
 	def patch = versionProps['version.patch'] as Integer
+	def build = versionProps['version.build'] as Integer
 	def preRelease = versionProps['version.pre-release']
 
 	def date = versionProps['version.build.date']
@@ -123,12 +124,13 @@ def updateVersionProperties() {
 	date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"))
 	time= java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HHmmss.SSS"))
 	metadata = date + '_' + time
-	patch++
-	def newVersion = "$major.$minor.$patch-$preRelease+$metadata"
+	build++
+	def newVersion = "$major.$minor.$patch.$build-$preRelease+$metadata"
 	println("Versionstring NEW: " + newVersion)
 	versionProps['version.major'] = major as String
 	versionProps['version.minor'] = minor as String
 	versionProps['version.patch'] = patch as String
+	versionProps['version.build'] = build as String
 	versionProps['version.pre-release'] = preRelease as String
 	versionProps['version.build.date'] = date as String
 	versionProps['version.build.time'] = time as String
