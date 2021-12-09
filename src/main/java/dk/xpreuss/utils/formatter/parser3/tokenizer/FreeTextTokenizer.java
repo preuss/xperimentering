@@ -17,11 +17,11 @@ public class FreeTextTokenizer implements ITokenizer{
 	}
 
 	@Override
-	public boolean has(List<CodePoint> peekCodePoints) {
+	public int has(List<CodePoint> peekCodePoints) {
 		if(peekCodePoints.size() < needMin() || peekCodePoints.size() > needMax()) {
-			return false;
+			return -1;
 		}
-		return true;
+		return peekCodePoints.stream().allMatch(codePoint -> Character.isLetter(codePoint.getValue())) ? 1 : 0;
 	}
 
 	@Override
@@ -29,6 +29,9 @@ public class FreeTextTokenizer implements ITokenizer{
 		if(codePoints.size() < needMin() || codePoints.size() > needMax()) {
 			throw new IllegalArgumentException();
 		}
-		return TokenizedToken.begin().withToken(TokenType.FREE_TEXT).usingCodePoints(1);
+		if(codePoints.stream().anyMatch(codePoint -> !Character.isLetter(codePoint.getValue()))) {
+			return TokenizedToken.begin().withToken(TokenType.ERROR);
+		}
+		return TokenizedToken.begin().withToken(TokenType.FREE_TEXT).usingCodePoints(1).withValue(codePoints);
 	}
 }

@@ -3,7 +3,6 @@ package dk.xpreuss.utils.formatter.parser3;
 import dk.xpreuss.utils.formatter.parser1.CodePoint;
 import dk.xpreuss.utils.formatter.parser3.tokenizer.*;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
-import dk.xpreuss.utils.formatter.parser3.tokentypes.WhiteSpaceTokenSubType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +21,16 @@ public class Lexer implements ILexer {
 			Token found = new Token(TokenType.END_OF_SOURCE, sourceScanner.getPosition());
 		}
 		try (ITokenizer tokenizer = new NewLineTokenizer()) {
-			if (tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax()))) {
-				TokenizedToken tokenizedToken = tokenizer.toTokenType(sourceScanner.peekCodePoint(tokenizer.needMax()));
+			int needRead = tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax()));
+			if (needRead > 0) {
+				List<CodePoint> codePoints = sourceScanner.readCodePoint(needRead);
+				TokenizedToken tokenizedToken = tokenizer.toTokenType(codePoints);
 				int position = sourceScanner.getPosition();
 				// Consume.
-				String value = codePointsToString(
-						sourceScanner.readCodePoint(tokenizedToken.getUsingCodePointsCount())
-				);
 				Token token = new Token(
 						tokenizedToken.getTokenType(),
 						tokenizedToken.getTokenSubType(),
-						value,
+						tokenizedToken.getValue(),
 						position,
 						tokenizedToken.getUsingCodePointsCount());
 				return token;
@@ -42,12 +40,12 @@ public class Lexer implements ILexer {
 			StringBuilder spaces = new StringBuilder(1);
 			TokenizedToken tokenizedToken = null;
 			int startPos = sourceScanner.getPosition();
-			while (tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax()))) {
-				tokenizedToken = tokenizer.toTokenType(sourceScanner.peekCodePoint(tokenizer.needMax()));
-				String value = codePointsToString(
-						sourceScanner.readCodePoint(tokenizedToken.getUsingCodePointsCount())
-				);
-				spaces.append(value);
+			int needRead = 0;
+			while ((needRead = tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax())))>0) {
+				List<CodePoint> codePoints = sourceScanner.readCodePoint(needRead);
+
+				tokenizedToken = tokenizer.toTokenType(codePoints);
+				spaces.append(tokenizedToken.getValue());
 			}
 			if (tokenizedToken != null) {
 				return new Token(
@@ -63,12 +61,11 @@ public class Lexer implements ILexer {
 			StringBuilder freeText = new StringBuilder(1);
 			TokenizedToken tokenizedToken = null;
 			int startPos = sourceScanner.getPosition();
-			while (tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax()))) {
-				tokenizedToken = tokenizer.toTokenType(sourceScanner.peekCodePoint(tokenizer.needMax()));
-				String value = codePointsToString(
-						sourceScanner.readCodePoint(tokenizedToken.getUsingCodePointsCount())
-				);
-				freeText.append(value);
+			int needRead = 0;
+			while ((needRead = tokenizer.has(sourceScanner.peekCodePoint(tokenizer.needMax())))>0) {
+				List<CodePoint> codePoints = sourceScanner.readCodePoint(needRead);
+				tokenizedToken = tokenizer.toTokenType(codePoints);
+				freeText.append(tokenizedToken.getValue());
 			}
 			if (tokenizedToken != null) {
 				return new Token(
@@ -90,11 +87,6 @@ public class Lexer implements ILexer {
 		throw new IllegalStateException();
 	}
 
-	private String codePointsToString(List<CodePoint> codePoints) {
-		return codePoints.stream().mapToInt(CodePoint::getValue)
-				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-	}
-
 	@Override
 	public Token peekNext() {
 		return null;
@@ -106,7 +98,7 @@ public class Lexer implements ILexer {
 	}
 
 	public static void main(String[] args) {
-		Lexer lexer = new Lexer(new StringScanner("  \n\n\r\r\nHello World!"));
+		Lexer lexer = new Lexer(new StringScanner("  \n\n\r\r\nHello World!!"));
 		Token next = null;
 		while ((next = lexer.readNext()).getType() != null) {
 			System.out.println(next);

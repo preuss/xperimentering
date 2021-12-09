@@ -8,7 +8,7 @@ import java.util.List;
 public interface ITokenizer extends Closeable {
 	int needMin();
 	int needMax();
-	boolean has(List<CodePoint> peekCodePoints);
+	int has(List<CodePoint> peekCodePoints);
 	TokenizedToken toTokenType(List<CodePoint> codePoints);
 
 	default void close() {}
