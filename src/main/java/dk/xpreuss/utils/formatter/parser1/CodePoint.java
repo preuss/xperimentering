@@ -3,7 +3,9 @@ package dk.xpreuss.utils.formatter.parser1;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class CodePoint {
+import java.util.Objects;
+
+public class CodePoint implements Comparable<CodePoint> {
 	private int value;
 
 	private CodePoint(int value) {
@@ -38,13 +40,20 @@ public class CodePoint {
 	}
 
 	public boolean equals(CodePoint other) {
-		if (this == other) return true;
-		if (other == null) return false;
+		if (this == Objects.requireNonNull(other)) return true;
 		return value == other.value;
 	}
 
 	@Override
 	public int hashCode() {
 		return value;
+	}
+
+	@Override
+	public int compareTo(CodePoint other) {
+		if (this == Objects.requireNonNull(other)) {
+			return 0;
+		}
+		return Integer.compare(this.value, other.value);
 	}
 }
