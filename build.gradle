@@ -118,7 +118,7 @@ def updateVersionProperties() {
 	def time = versionProps['version.build.time']
 
 	def metadata = date + '_' + time
-	def oldVersion = "$major.$minor.$patch-$preRelease+$metadata"
+	def oldVersion = "$major.$minor.$patch.$build-$preRelease+$metadata"
 	println("Versionstring OLD: " + oldVersion)
 
 	date = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd"))
