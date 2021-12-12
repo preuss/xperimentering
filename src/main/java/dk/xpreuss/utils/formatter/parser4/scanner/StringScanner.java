@@ -15,6 +15,10 @@ public class StringScanner implements IScanner {
 		this.value = new UString(Objects.requireNonNull(value));
 	}
 
+	public StringScanner(UString value) {
+		this.value = value;
+	}
+
 	@Override
 	public boolean hasNext() {
 		return value.length() > position;
