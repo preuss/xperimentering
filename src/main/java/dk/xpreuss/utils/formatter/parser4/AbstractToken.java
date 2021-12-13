@@ -1,24 +1,25 @@
-package dk.xpreuss.utils.formatter.parser3;
+package dk.xpreuss.utils.formatter.parser4;
 
+import dk.xpreuss.utils.formatter.parser3.Token;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
+import dk.xpreuss.utils.formatter.parser4.scanner.CodePointSequence;
 import dk.xpreuss.utils.preuss.StringJoiner;
-import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Objects;
 
-public class Token {
+public abstract class AbstractToken implements IToken {
 	private final TokenType type;
 	private final TokenSubType subType;
-	private final CharSequence value;
+	private final CodePointSequence value;
 	private final int position;
 	private final int codePointCount;
 
-	public Token(TokenType type, int position) {
-		this(type, null, null, position, 0);
-	}
-
-	public Token(TokenType tokenType, TokenSubType tokenSubType, CharSequence value, int position, int codePointCount) {
+	protected AbstractToken(TokenType tokenType,
+	                        TokenSubType tokenSubType,
+	                        CodePointSequence value,
+	                        int position,
+	                        int codePointCount) {
 		this.type = Objects.requireNonNull(tokenType);
 		this.subType = tokenSubType;
 		this.value = value;
@@ -34,7 +35,7 @@ public class Token {
 		return subType;
 	}
 
-	public CharSequence getValue() {
+	public CodePointSequence getValue() {
 		return value;
 	}
 
@@ -42,20 +43,15 @@ public class Token {
 		return position;
 	}
 
-	public int getCodePointCount() {
-		return codePointCount;
-	}
-
-
 	@Override
 	public String toString() {
 		StringJoiner joiner = new StringJoiner(", ", Token.class.getSimpleName() + "(", ")");
 		joiner
-				.add("type=" + type)
-				.addIfNotEmpty("subType=", subType)
-				.addIfNotEmpty("value=", Objects.requireNonNullElse(value, "").toString().trim())
-				.add("position=" + position)
-				.addIfTrue("codePointCount=", codePointCount, value -> value > 0);
+				.add("type=" + getType())
+				.addIfNotEmpty("subType=", getSubType())
+				.addIfNotEmpty("value=", Objects.requireNonNullElse(getValue(), "").toString().trim())
+				.add("position=" + getPosition())
+				.addIfTrue("codePointCount=", getCodePointCount(), value -> value > 0);
 		return joiner.toString();
 	}
 }
