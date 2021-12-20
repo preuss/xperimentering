@@ -26,10 +26,10 @@ public class Utf8 implements Comparable<Utf8> {
 	}
 
 	public static Utf8 of(int codePoint) {
-		//return new Utf8(Character.toString(codePoint).getBytes(StandardCharsets.UTF_8));
-		//return new Utf8(codePointToUtf8(codePoint));
-		//return new Utf8(cpToUtf8_4byte(codePoint));
-		return new Utf8(cpToUtf8_6byte(codePoint));
+//		return new Utf8(Character.toString(codePoint).getBytes(StandardCharsets.UTF_8));
+//		return new Utf8(codePointToUtf8(codePoint));
+		return new Utf8(codePointToUtf8_4byte(codePoint));
+//		return new Utf8(codePointToUtf8_6byte(codePoint));
 	}
 
 	public byte[] getByteValue() {
@@ -68,55 +68,37 @@ public class Utf8 implements Comparable<Utf8> {
 		return Arrays.compare(this.charValue, other.charValue);
 	}
 
-	public static void main(String[] args) {
-		String t = "Another\u2060yesæøå\uD834\uDD64\u0000";
-		System.out.println(t.codePoints().count());
-
-		int MAX = 1000000;
-		long start = System.nanoTime();
-		for(int i=0;i<MAX; i++) {
-			t.codePoints().sequential().mapToObj(Utf8::of).forEach(utf8 -> {});
-		}
-		long end = System.nanoTime();
-		String timeFmt = DurationFormatUtils.formatDuration((end-start)/1000000, "**HH:mm:ss.S**", true);
-		System.out.println("Time: " +(end-start));
-		System.out.println(timeFmt);
-
-
-	}
-
-	private static byte[] cpToUtf8_6byte(int codePoint) {
-		final byte[] buffer1 = new byte[1];
-		final byte[] buffer2 = new byte[2];
-		final byte[] buffer3 = new byte[3];
-		final byte[] buffer4 = new byte[4];
-		final byte[] buffer5 = new byte[5];
-		final byte[] buffer6 = new byte[6];
+	private static byte[] codePointToUtf8_6byte(int codePoint) {
 		if (codePoint < 0x80) {
 			/* one byte */
+			final byte[] buffer1 = new byte[1];
 			buffer1[0] = (byte) codePoint;
 			return buffer1;
 		} else if (codePoint < 0x800) {
 			/* two bytex */
-			buffer2[0] = (byte) (0xC0 | (codePoint >>> 6));
+			final byte[] buffer2 = new byte[2];
+			buffer2[0] = (byte) (0xC0 | ((codePoint >>> 6) & 0x1F));
 			buffer2[1] = (byte) (0x80 | (codePoint & 0x3F));
 			return buffer2;
 		} else if (codePoint < 0x10000) {
 			/* three bytes */
-			buffer3[0] = (byte) (0xE0 | (codePoint >>> 12));
+			final byte[] buffer3 = new byte[3];
+			buffer3[0] = (byte) (0xE0 | ((codePoint >>> 12) & 0x0F));
 			buffer3[1] = (byte) (0x80 | ((codePoint >>> 6) & 0x3F));
 			buffer3[2] = (byte) (0x80 | (codePoint & 0x3F));
 			return buffer3;
 		} else if (codePoint < 0x200000) {
 			/* four bytes */
-			buffer4[0] = (byte) (0xF0 | (codePoint >>> 18));
+			final byte[] buffer4 = new byte[4];
+			buffer4[0] = (byte) (0xF0 | ((codePoint >>> 18) & 0x07));
 			buffer4[1] = (byte) (0x80 | ((codePoint >>> 12) & 0x3F));
 			buffer4[2] = (byte) (0x80 | ((codePoint >>> 6) & 0x3F));
 			buffer4[3] = (byte) (0x80 | (codePoint & 0x3F));
 			return buffer4;
 		} else if (codePoint < 0x4000000) {
 			/* five bytes */
-			buffer5[0] = (byte) (0xF8 | (codePoint >>> 24));
+			final byte[] buffer5 = new byte[5];
+			buffer5[0] = (byte) (0xF8 | ((codePoint >>> 24) & 0x03));
 			buffer5[1] = (byte) (0x80 | ((codePoint >>> 18) & 0x3F));
 			buffer5[2] = (byte) (0x80 | ((codePoint >>> 12) & 0x3F));
 			buffer5[3] = (byte) (0x80 | ((codePoint >>> 6) & 0x3F));
@@ -124,7 +106,8 @@ public class Utf8 implements Comparable<Utf8> {
 			return buffer5;
 		} else /* if (codePoint <= 0x7FFFFFFF) */ {
 			/* six bytes */
-			buffer6[0] = (byte) (0xFC | (codePoint >>> 30));
+			final byte[] buffer6 = new byte[6];
+			buffer6[0] = (byte) (0xFC | ((codePoint >>> 30) & 0x01));
 			buffer6[1] = (byte) (0x80 | ((codePoint >>> 24) & 0x3F));
 			buffer6[2] = (byte) (0x80 | ((codePoint >>> 18) & 0x3F));
 			buffer6[3] = (byte) (0x80 | ((codePoint >>> 12) & 0x3F));
@@ -133,29 +116,49 @@ public class Utf8 implements Comparable<Utf8> {
 			return buffer6;
 		}
 	}
-	private static byte[] cpToUtf8_4byte(int codePoint) {
-		final byte[] buffer1 = new byte[1];
-		final byte[] buffer2 = new byte[2];
-		final byte[] buffer3 = new byte[3];
-		final byte[] buffer4 = new byte[4];
-		if (codePoint < 0x80) {
+
+	/**
+	 * UTF-8 RFC3629
+	 * @param codePoint 32 bit utf code point
+	 * @return encoded byte array of UTF-8
+	 */
+	private static byte[] codePointToUtf8_4byte(int codePoint) {
+		if (codePoint < 0 || codePoint > 0x10FFFF) {
+			// Or use exception ?
+			throw new IllegalArgumentException("Not a valid Unicode code point: 0x" + Integer.toHexString(codePoint).toUpperCase());
+			/* */
+
+			// error - use replacement character
+			/*
+			final byte[] buffer3 = new byte[3];
+			buffer3[0] = (byte) 0xEF;
+			buffer3[1] = (byte) 0xBF;
+			buffer3[2] = (byte) 0xBD;
+			return buffer3;
+			 */
+		} else if (codePoint < 0x80) {
 			/* one byte */
+			// Plain ASCII
+			final byte[] buffer1 = new byte[1];
 			buffer1[0] = (byte) codePoint;
 			return buffer1;
 		} else if (codePoint < 0x800) {
 			/* two bytex */
-			buffer2[0] = (byte) (0xC0 | (codePoint >>> 6));
+			final byte[] buffer2 = new byte[2];
+			buffer2[0] = (byte) (0xC0 | ((codePoint >>> 6) & 0x1F));
 			buffer2[1] = (byte) (0x80 | (codePoint & 0x3F));
 			return buffer2;
 		} else if (codePoint < 0x10000) {
 			/* three bytes */
-			buffer3[0] = (byte) (0xE0 | (codePoint >>> 12));
+			final byte[] buffer3 = new byte[3];
+			buffer3[0] = (byte) (0xE0 | ((codePoint >>> 12) & 0x0F));
 			buffer3[1] = (byte) (0x80 | ((codePoint >>> 6) & 0x3F));
 			buffer3[2] = (byte) (0x80 | (codePoint & 0x3F));
 			return buffer3;
-		} else /* if (codePoint < 0x200000) */ {
+		} else /* if (codePoint < 0x110000) */ {
 			/* four bytes */
-			buffer4[0] = (byte) (0xF0 | (codePoint >>> 18));
+			final byte[] buffer4 = new byte[4];
+			buffer4[0] = (byte) (0xF0 | ((codePoint >>> 18) & 0x07));
 			buffer4[1] = (byte) (0x80 | ((codePoint >>> 12) & 0x3F));
 			buffer4[2] = (byte) (0x80 | ((codePoint >>> 6) & 0x3F));
 			buffer4[3] = (byte) (0x80 | (codePoint & 0x3F));
@@ -227,6 +230,36 @@ public class Utf8 implements Comparable<Utf8> {
 			}
 		});
 		return baos.toByteArray();
+	}
+
+	public static void main(String[] args) {
+		final String t = "Another\u2060yesæøå\uD834\uDD64\u0000";
+		System.out.println(t.codePoints().count());
+
+		encodeTestTime(t, 10);
+		encodeTestTime(t, 10);
+		encodeTestTime(t, 10);
+		int MAX = 10_000_000;
+		encodeTestTime(t, MAX);
+
+/*
+		System.out.println(Utf8.of(-1));
+		System.out.println(codePointToUtf8_4byte(-2));
+		System.out.println("-1 is: " + Integer.toHexString(-1));
+		System.out.println(0x7FFFFFFF);
+ */
+	}
+
+	public static void encodeTestTime(final String text, final long MAX_COUNT) {
+		long start = System.nanoTime();
+		for (int i = 0; i < MAX_COUNT; i++) {
+			text.codePoints().sequential().mapToObj(Utf8::of).forEach(utf8 -> {
+			});
+		}
+		long end = System.nanoTime();
+		String timeFmt = DurationFormatUtils.formatDuration((end - start) / 1000000, "**HH:mm:ss.S**", true);
+		System.out.println("Time: " + (end - start));
+		System.out.println(timeFmt);
 	}
 
 }
