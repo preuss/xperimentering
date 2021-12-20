@@ -52,6 +52,10 @@ public class Utf8 implements Comparable<Utf8> {
 		return new String(getByteValue(), StandardCharsets.UTF_8);
 	}
 
+	public byte getByteSize() {
+		return (byte) charValue.length;
+	}
+
 	@Override
 	public String toString() {
 		return new StringJoiner(", ", Utf8.class.getSimpleName() + "[", "]")
