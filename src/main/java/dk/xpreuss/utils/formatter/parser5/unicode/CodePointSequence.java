@@ -1,8 +1,6 @@
 package dk.xpreuss.utils.formatter.parser5.unicode;
 
 
-import dk.xpreuss.utils.formatter.parser1.CodePoint;
-
 import java.nio.CharBuffer;
 import java.util.*;
 import java.util.function.IntConsumer;

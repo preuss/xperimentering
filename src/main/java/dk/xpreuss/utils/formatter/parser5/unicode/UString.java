@@ -1,7 +1,5 @@
 package dk.xpreuss.utils.formatter.parser5.unicode;
 
-import dk.xpreuss.utils.formatter.parser1.CodePoint;
-
 import java.util.Objects;
 
 public class UString implements CodePointSequence {

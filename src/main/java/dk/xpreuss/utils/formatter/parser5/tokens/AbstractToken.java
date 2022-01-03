@@ -1,10 +1,8 @@
 package dk.xpreuss.utils.formatter.parser5.tokens;
 
-import dk.xpreuss.utils.formatter.parser3.Token;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
-import dk.xpreuss.utils.formatter.parser4.IToken;
-import dk.xpreuss.utils.formatter.parser4.scanner.CodePointSequence;
+import dk.xpreuss.utils.formatter.parser5.unicode.CodePointSequence;
 import dk.xpreuss.utils.preuss.StringJoiner;
 
 import java.util.Objects;

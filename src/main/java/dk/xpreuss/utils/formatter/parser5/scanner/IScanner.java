@@ -1,7 +1,7 @@
 package dk.xpreuss.utils.formatter.parser5.scanner;
 
-import dk.xpreuss.utils.formatter.parser1.CodePoint;
-import dk.xpreuss.utils.formatter.parser4.scanner.CodePointSequence;
+import dk.xpreuss.utils.formatter.parser5.unicode.CodePoint;
+import dk.xpreuss.utils.formatter.parser5.unicode.CodePointSequence;
 
 import java.util.Optional;
 

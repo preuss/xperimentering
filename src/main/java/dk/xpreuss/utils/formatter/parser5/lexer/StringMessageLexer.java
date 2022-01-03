@@ -1,14 +1,13 @@
 package dk.xpreuss.utils.formatter.parser5.lexer;
 
-import dk.xpreuss.utils.formatter.parser1.CodePoint;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.ControlCharacterTokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.NewLineTokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
-import dk.xpreuss.utils.formatter.parser4.ILexer;
-import dk.xpreuss.utils.formatter.parser4.IScanner;
-import dk.xpreuss.utils.formatter.parser4.IToken;
-import dk.xpreuss.utils.formatter.parser4.scanner.StringScanner;
-import dk.xpreuss.utils.formatter.parser4.tokens.Token;
+import dk.xpreuss.utils.formatter.parser5.scanner.IScanner;
+import dk.xpreuss.utils.formatter.parser5.scanner.StringScanner;
+import dk.xpreuss.utils.formatter.parser5.tokens.IToken;
+import dk.xpreuss.utils.formatter.parser5.tokens.Token;
+import dk.xpreuss.utils.formatter.parser5.unicode.CodePoint;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.Arrays;

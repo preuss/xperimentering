@@ -2,8 +2,7 @@ package dk.xpreuss.utils.formatter.parser5.tokens;
 
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
-import dk.xpreuss.utils.formatter.parser4.AbstractToken;
-import dk.xpreuss.utils.formatter.parser4.scanner.CodePointSequence;
+import dk.xpreuss.utils.formatter.parser5.unicode.CodePointSequence;
 
 public class Token extends AbstractToken {
 	public Token(TokenType type, int position) {

@@ -1,7 +1,8 @@
 package dk.xpreuss.utils.formatter.parser5.lexer;
 
-import dk.xpreuss.utils.formatter.parser4.IEnumeratorable;
-import dk.xpreuss.utils.formatter.parser4.IToken;
+
+import dk.xpreuss.utils.formatter.parser5.IEnumeratorable;
+import dk.xpreuss.utils.formatter.parser5.tokens.IToken;
 
 import java.util.Iterator;
 import java.util.Optional;
