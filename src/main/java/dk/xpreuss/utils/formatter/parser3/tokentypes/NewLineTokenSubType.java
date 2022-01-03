@@ -2,15 +2,19 @@ package dk.xpreuss.utils.formatter.parser3.tokentypes;
 
 import java.util.Arrays;
 
-public enum WhiteSpaceTokenSubType implements TokenSubType {
+public enum NewLineTokenSubType implements TokenSubType {
 	WIDOWS_STYLE("\r\n"),
 	POSIX_STYLE("\n"),
 	MAC_STYLE("\r");
 
 	private final CharSequence value;
 
-	WhiteSpaceTokenSubType(CharSequence retunValue) {
+	NewLineTokenSubType(CharSequence retunValue) {
 		this.value = retunValue;
+	}
+
+	public static boolean isNewLine(int codePoint) {
+		return '\n' == codePoint || '\r' == codePoint;
 	}
 
 	public CharSequence getValue() {
@@ -18,7 +22,7 @@ public enum WhiteSpaceTokenSubType implements TokenSubType {
 	}
 
 	public static int biggestStyleLength() {
-		return Arrays.stream(WhiteSpaceTokenSubType.values())
+		return Arrays.stream(NewLineTokenSubType.values())
 				.map(newLineType -> newLineType.value.length())
 				.reduce(Integer::max)
 				.orElseThrow();

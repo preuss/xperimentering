@@ -2,6 +2,8 @@ package dk.xpreuss.utils.formatter.parser3.tokentypes;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -101,5 +103,15 @@ public enum ControlCharacterTokenSubType implements TokenSubType {
 				.add("charName='" + charName + "'")
 				.add("description='" + description + "'")
 				.toString();
+	}
+
+	public static boolean hasCodePoint(int codePoint) {
+		return Arrays.stream(ControlCharacterTokenSubType.values())
+				.parallel().anyMatch(controlCharacterTokenSubType -> codePoint == controlCharacterTokenSubType.getDecCodePoint());
+	}
+
+	public static ControlCharacterTokenSubType translateFromCodePoint(int codePoint) {
+		return Arrays.stream(ControlCharacterTokenSubType.values())
+				.filter(controlCharacterTokenSubType -> codePoint == controlCharacterTokenSubType.getDecCodePoint()).findAny().orElseGet(() -> null);
 	}
 }

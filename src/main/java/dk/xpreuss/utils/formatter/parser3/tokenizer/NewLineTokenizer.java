@@ -1,9 +1,8 @@
 package dk.xpreuss.utils.formatter.parser3.tokenizer;
 
 import dk.xpreuss.utils.formatter.parser1.CodePoint;
-import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenSubType;
 import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
-import dk.xpreuss.utils.formatter.parser3.tokentypes.WhiteSpaceTokenSubType;
+import dk.xpreuss.utils.formatter.parser3.tokentypes.NewLineTokenSubType;
 
 import java.util.List;
 
@@ -52,15 +51,15 @@ public class NewLineTokenizer implements ITokenizer {
 		TokenizedToken tokenizedToken = TokenizedToken.begin();
 		if (codePoints.size() >= needMin()) {
 			if (POSIX_STYLE.equals(codePoints.get(0))) {
-				return tokenizedToken.withToken(TokenType.NEW_LINE).withSubToken(WhiteSpaceTokenSubType.POSIX_STYLE).usingCodePoints(1).withValue(codePoints);
+				return tokenizedToken.withToken(TokenType.NEW_LINE).withSubToken(NewLineTokenSubType.POSIX_STYLE).usingCodePoints(1).withValue(codePoints);
 			} else if (WINDOWS_STYLE_FIRST.equals(codePoints.get(0))) {
 				if (codePoints.size() >= needMax()) {
 					if (WINDOWS_STYLE_SECOND.equals(codePoints.get(1))) {
-						return tokenizedToken.withToken(TokenType.NEW_LINE).withSubToken(WhiteSpaceTokenSubType.WIDOWS_STYLE).usingCodePoints(2).withValue(codePoints);
+						return tokenizedToken.withToken(TokenType.NEW_LINE).withSubToken(NewLineTokenSubType.WIDOWS_STYLE).usingCodePoints(2).withValue(codePoints);
 					}
 				}
 				if (MAC_STYLE.equals(codePoints.get(0))) {
-					return tokenizedToken.withToken(TokenType.NEW_LINE).withSubToken(WhiteSpaceTokenSubType.MAC_STYLE).usingCodePoints(1).withValue(codePoints);
+					return tokenizedToken.withToken(TokenType.NEW_LINE).withSubToken(NewLineTokenSubType.MAC_STYLE).usingCodePoints(1).withValue(codePoints);
 				}
 			}
 		}
