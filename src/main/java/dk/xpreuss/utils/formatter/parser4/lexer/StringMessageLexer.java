@@ -71,8 +71,12 @@ public class StringMessageLexer implements ILexer {
 	}
 
 	private IToken parseNewLine(CodePoint cp) {
+		/*
 		return spaceCharacters.stream().parallel().filter(whiteSpaceConst -> whiteSpaceConst.getLeft() == cp.getValue())
 				.map(whiteSpaceConst -> Token.builder().type(TokenType.WHITE_SPACE).subType(NewLineTokenSubType.))
 				.findAny().orElseGet(() -> null);
+
+		 */
+		return null;
 	}
 }
