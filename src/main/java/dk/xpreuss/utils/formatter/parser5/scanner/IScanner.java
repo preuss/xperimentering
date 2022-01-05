@@ -40,7 +40,7 @@ public interface IScanner {
 	 * @param nextCount the number of CodePoints to return
 	 * @return the list of codePoints specified in nextCount
 	 */
-	CodePointSequence readCodePoint(int nextCount);
+	CodePointSequence nextCount(int nextCount);
 	/**
 	 * Retrieves, but does not remove, the head of the stream.
 	 * Only returns up to count of choosen nextCount. Only returns the available count always size of nextCount or less.
@@ -48,7 +48,7 @@ public interface IScanner {
 	 * @param peekCount the number of CodePoints to return
 	 * @return the list of codePoints specified in nextCount
 	 */
-	CodePointSequence peekCodePoint(int peekCount);
+	CodePointSequence peekCount(int peekCount);
 
 	/**
 	 * This is the index of the current char. Zero indexed.

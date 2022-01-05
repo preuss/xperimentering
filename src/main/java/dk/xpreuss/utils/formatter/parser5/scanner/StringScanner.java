@@ -5,6 +5,7 @@ import dk.xpreuss.utils.formatter.parser5.unicode.CodePoint;
 import dk.xpreuss.utils.formatter.parser5.unicode.CodePointSequence;
 import dk.xpreuss.utils.formatter.parser5.unicode.UString;
 
+import java.nio.CharBuffer;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,12 +50,18 @@ public class StringScanner implements IScanner {
 	}
 
 	@Override
-	public CodePointSequence readCodePoint(int nextCount) {
-		return null;
+	public CodePointSequence nextCount(int nextCount) {
+		if(nextCount < 0) throw new IllegalArgumentException();
+		if(nextCount ==0) return new UString();
+		CharBuffer charBuffer = CharBuffer.allocate(nextCount);
+		while (hasNext()) {
+			charBuffer.append(next().toString());
+		}
+
 	}
 
 	@Override
-	public CodePointSequence peekCodePoint(int peekCount) {
+	public CodePointSequence peekCount(int peekCount) {
 		if (peekCount < 0) throw new IllegalArgumentException();
 		if (peekCount == 0) return new UString();
 		final int minEndIndex = Integer.min(position + peekCount, value.length());

@@ -10,17 +10,18 @@ import dk.xpreuss.utils.formatter.parser5.tokens.Token;
 import dk.xpreuss.utils.formatter.parser5.unicode.CodePoint;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class StringMessageLexer implements ILexer {
 	private IScanner scanner;
 	private IToken currentToken;
 
 	public StringMessageLexer(String replaceableMessage) {
-		this.scanner = new StringScanner(replaceableMessage);
+		this(new StringScanner(replaceableMessage));
+	}
+
+	public StringMessageLexer(IScanner scanner) {
+		this.scanner = Objects.requireNonNull(scanner);
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class StringMessageLexer implements ILexer {
 
 			if (isControlCharacter(currentCodePoint)) {
 				return parseControlCharacter(currentCodePoint);
-			} else if(isNewLine(currentCodePoint)) {
+			} else if (isNewLine(currentCodePoint)) {
 				//scanner.peek()
 			}
 			throw new IllegalArgumentException();
@@ -63,11 +64,12 @@ public class StringMessageLexer implements ILexer {
 
 	private static final List<Triple<Integer, String, String>> spaceCharacters =
 			Collections.unmodifiableList(
-			Arrays.asList(
-					Triple.of(32, " ", "Space"),
-					Triple.of(160, "NBSP", "Non-breaking space")
-			)
-	);
+					Arrays.asList(
+							Triple.of(32, " ", "Space"),
+							Triple.of(160, "NBSP", "Non-breaking space")
+					)
+			);
+
 	private boolean isNewLine(CodePoint cp) {
 		return NewLineTokenSubType.isNewLine(cp.getValue());
 	}
