@@ -51,13 +51,15 @@ public class StringScanner implements IScanner {
 
 	@Override
 	public CodePointSequence nextCount(int nextCount) {
-		if(nextCount < 0) throw new IllegalArgumentException();
-		if(nextCount ==0) return new UString();
+		if (nextCount < 0) throw new IllegalArgumentException();
+		if (nextCount == 0) return new UString();
 		CharBuffer charBuffer = CharBuffer.allocate(nextCount);
-		while (hasNext()) {
+		int appendedCount = 0;
+		while (hasNext() && appendedCount < nextCount) {
+			appendedCount++;
 			charBuffer.append(next().toString());
 		}
-
+		return new UString(charBuffer.rewind().subSequence(0, appendedCount).toString());
 	}
 
 	@Override

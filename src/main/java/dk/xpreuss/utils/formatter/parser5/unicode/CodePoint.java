@@ -23,6 +23,10 @@ public class CodePoint implements Comparable<CodePoint> {
 
 	@Override
 	public String toString() {
+		return Character.toString(value);
+	}
+
+	public String toStringDescriptive() {
 		return "CodePoint{Char:'" + Character.toString(value) + "', Int:#" + value + ", Name: '" + Character.getName(value) + "'}";
 	}
 
