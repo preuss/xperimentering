@@ -1,8 +1,6 @@
-package dk.xpreuss.utils.formatter.parser3.tokentypes;
+package dk.xpreuss.utils.formatter.parser5.tokens;
 
-import dk.xpreuss.utils.formatter.parser5.unicode.CodePoint;
 import dk.xpreuss.utils.formatter.parser5.unicode.CodePointSequence;
-import dk.xpreuss.utils.formatter.parser5.unicode.UString;
 
 import java.util.Arrays;
 import java.util.Comparator;

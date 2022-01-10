@@ -1,7 +1,5 @@
 package dk.xpreuss.utils.formatter.parser5.tokens;
 
-import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenSubType;
-import dk.xpreuss.utils.formatter.parser3.tokentypes.TokenType;
 import dk.xpreuss.utils.formatter.parser5.unicode.CodePointSequence;
 import dk.xpreuss.utils.preuss.StringJoiner;
 
@@ -40,6 +38,10 @@ public abstract class AbstractToken implements IToken {
 
 	public int getPosition() {
 		return position;
+	}
+
+	public int codePointCount() {
+		return codePointCount;
 	}
 
 	@Override

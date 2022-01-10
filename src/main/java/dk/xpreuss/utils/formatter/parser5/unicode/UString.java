@@ -8,8 +8,13 @@ public class UString implements CodePointSequence {
 	public UString() {
 		this.str = "";
 	}
+
 	public UString(String stringValue) {
 		this.str = Objects.requireNonNull(stringValue);
+	}
+
+	public UString(CharSequence charSequenceValue) {
+		this.str = Objects.requireNonNull(charSequenceValue).toString();
 	}
 
 	@Override

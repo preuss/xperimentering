@@ -11,15 +11,13 @@ public class Parser5Main {
 	public static void main(String[] args) {
 		System.out.println("Parser >>5<< Main");
 
-		final String message = "Hello";
+		final String message = "\n\rHello World";
 
 		IScanner scanner = new StringScanner(message);
 		ILexer lexer = new StringMessageLexer(scanner);
 
-		System.out.println("hasNext   : " + scanner.hasNext());
-		System.out.println("Next      : " +scanner.next());
-		System.out.println("Peek      : "+scanner.peek());
-		System.out.println("PeekCount : "+scanner.peekCount(3));
-		System.out.println("NextCount : " +scanner.nextCount(3));
+		while(lexer.hasNext()) {
+			System.out.println("next : " + lexer.next());
+		}
 	}
 }
