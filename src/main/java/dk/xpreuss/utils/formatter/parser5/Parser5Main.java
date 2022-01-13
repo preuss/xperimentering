@@ -11,7 +11,7 @@ public class Parser5Main {
 	public static void main(String[] args) {
 		System.out.println("Parser >>5<< Main");
 
-		final String message = "\n\rHello World";
+		final String message = "\n\rHello\u001E\n\r\r World";
 
 		IScanner scanner = new StringScanner(message);
 		ILexer lexer = new StringMessageLexer(scanner);

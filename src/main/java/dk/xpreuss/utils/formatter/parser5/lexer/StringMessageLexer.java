@@ -98,7 +98,7 @@ public class StringMessageLexer implements ILexer {
 			);
 
 	private boolean isNewLine(IScanner scanner) {
-		return scanner.peek().map(CodePoint::getValue).map(NewLineTokenSubType::isNewLine).orElse(false);
+		return NewLineTokenSubType.isNewLine(scanner.peekCount(NewLineTokenSubType.biggestStyleLength()));
 	}
 
 	private IToken parseNewLine(IScanner scanner) {
