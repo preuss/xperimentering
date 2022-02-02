@@ -17,6 +17,10 @@ public class UString implements CodePointSequence {
 		this.str = Objects.requireNonNull(charSequenceValue).toString();
 	}
 
+	public UString(CodePointSequence codePointSequenceValue) {
+		this(Objects.requireNonNull(codePointSequenceValue).toString());
+	}
+
 	@Override
 	public int length() {
 		return str.length();
