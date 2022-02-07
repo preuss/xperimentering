@@ -7,6 +7,7 @@ import dk.xpreuss.utils.formatter.parser5.unicode.UString;
 import java.text.Format;
 import java.text.MessageFormat;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
@@ -38,9 +39,12 @@ public class StringReplaceFormat {
 		String output = MessageFormat.format(pattern, (Object[]) arguments);
 		System.out.println("Output: " + output);
 
-		Object[] parsed = messageFormat.parse("første, anden");
+		Object[] parsed = messageFormat.parse(output);
 
-		//System.out.println("Output2: " + output2);
+		System.out.println("Output2: " + Arrays.toString(parsed));
+
+		StringReplaceFormat stringReplaceFormat = StringReplaceFormat.from(pattern);
+		System.out.println(stringReplaceFormat.format(arguments));
 	}
 
 	public static StringReplaceFormat from(CodePointSequence rawMessageCpSequence) {
